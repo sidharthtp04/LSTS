@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>status
+<body>
+    <h1>Computer details</h1>
+    <form action="" method="POST">
+      {% csrf_token %}
+      <label for="clabel">C_Label:</label>
+        <input type="text" name="clabel"><br>
+        <label for="dop">DOP:</label>
+        <input type="date" name="dop"><br>
+        <label for ="lab">lab</label>
+        <select id = "lab" name="lab">
+            {% for i in lab %}
+                <option value="{{i.lab_id}}">{{i.lab_name}}</option>     
+            {% endfor %}
+        </select><br>
+        <label for ='cpu_types'>CPU</label>
+        <select name="cpu" id="cpu">
+            {% for i in cpu %}
+                <option value="{{i.cpu_id}}">{{i.make}} {{i.series}}-{{i.generation}} Generation CPU @ {{i.speed}} x {{i.core_count}}</option>     
+            {% endfor %}
+        </select><br>
+        <label for="mb_type">Motherboard</label>
+        <select name="mb" id="mb">
+            {% for i in motherboard %}
+                <option value="{{i.mb_id}}">{{i.mb_socket_type}} {{i.max_ram_capacity}} {{i.make}} {{i.brand}}</option>     
+            {% endfor %}
+        </select><br>
+        <label for ="ram">ram</label>
+        <select id = "ram" name="ram">
+            {% for i in ram %}
+                <option value="{{i.ram_id}}">{{i.ram_size}} {{i.make}} {{i.speed}} {{i.series}}</option>     
+            {% endfor %}
+        </select><br>
+        <label for ="storage">storage</label>
+        <select id = "storage" name="storage">
+            {% for i in storage %}
+                <option value="{{i.storage_id}}">{{i.storage_size}} {{i.make}} {{i.technology}} </option>     
+            {% endfor %}
+        </select><br>
+        <label for ="smps">smps</label>
+        <select id = "smps" name="smps">
+            {% for i in smps %}
+                <option value="{{i.smps_id}}">{{i.make}} {{i.power}} </option>     
+            {% endfor %}
+        </select><br>
+        <label for ="keyboard">keyboard</label>
+        <select id = "keyboard" name="keyboard">
+            {% for i in keyboard %}
+                <option value="{{i.keyboard_id}}">{{i.make}}</option>     
+            {% endfor %}
+        </select><br>
+        <label for ="mouse">mouse </label>
+        <select id = "mouse" name="mouse">
+            {% for i in mouse %}
+                <option value="{{i.mouse_id}}">{{i.make}} </option>     
+            {% endfor %}
+        </select><br>
+        <label for ="monitor ">monitor </label>
+        <select id = "monitor" name="monitor">
+            {% for i in monitor %}
+                <option value="{{i.monitor_id}}">{{i.make}} {{i.size}} {{i.resolution}}</option>     
+            {% endfor %}
+        </select><br>
+        <label for="status">STATUS:</label>
+        <input type="text" name="status"><br>
+        <label for="invoice_no">Invoice No:</label>
+        <input type="number" name="invoice_no"><br>
+        <label for="os_type">OS TYPE:</label>
+        <input type="text" name="os_type"><br>
+        <label>submit</label>
+        <input type="submit" >
+
+
+    </form>
+</body>
+</html>
