@@ -6,9 +6,24 @@
     <title>Document</title>
 </head>
 <body>
+    <table border="1">
+    <th>C_Label</th><th>LAB</th><th>Date of Purchase</th><th>CPU</th><th>Motherboard</th><th>Ram</th><th>Storage</th><th>SMPS</th><th>Keyboard</th><th>Mouse</th><th>Monitor</th><th>Status</th><th>Invoice No.</th><th>OS Type</th>
     {%for i in details%}
-    {{i.c_label}}
-    {{i.monitor.make}}
+    <tr><td>{{i.c_label}}</td>
+    <td>{{i.lab.lab_name}}</td>
+    <td>{{i.dop}}</td>
+    <td>{{i.cpu.make}} {{i.cpu.series}}-{{i.cpu.generation}} Generation CPU @ {{i.cpu.speed}} x {{i.cpu.core_count}}</td>
+    <td>{{i.mb.mb_socket_type}} {{i.mb.max_ram_capacity}} {{i.mb.make}} {{i.mb.brand}}</td>
+    <td>{{i.ram.ram_size}} {{i.ram.make}} {{i.ram.speed}} {{i.ram.series}}</td>
+    <td>{{i.storage.storage_size}} {{i.storage.make}} {{i.storage.technology}} </td>
+    <td>{{i.smps.make}} {{i.smps.power}}W</td>
+    <td>{{i.keyboard.make}}</td>
+    <td>{{i.mouse.make}}</td>
+    <td>{{i.monitor.make}}</td>
+    <td>{{i.status}}</td>
+    <td>{{i.invoice_no}}</td>
+    <td>{{i.os_type}}</td>
+    </tr>
     {%endfor%}
 </body>
 </html>

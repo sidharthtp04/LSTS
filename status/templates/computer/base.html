@@ -97,35 +97,19 @@
   <nav>
     <ul>
       <li>
-        <a href="{% url %}">Home</a>
+        <a href="{% url 'home'%}">Home</a>
       </li>
       <li class="dropdown">
         <a href="#">Computer</a>
         <div class="dropdown-content">
-          <a href="{%url 'add_Computer'%}">Add Computer</a>
-          <a href="{%url 'view_Computer'%}">View Computer</a>
+          <a href="{%url 'computer'%}">Add Computer</a>
+          <a href="{%url 'display'%}">View Computer</a>
         </div>
       </li>
-      <li class="dropdown">
-        <a href="#">Complaint Reporting</a>
-        <div class="dropdown-content">
-          <a href="{%url 'attendance'%}">Add Complaint</a>
-          <a href="{%url 'view_attendance2'%}">View Complaint</a>
-        </div>
-      </li>
-   
-      <li>
-        <a href="{%url 'report'%}">Report Status</a>
-      </li>
-    </ul>
+     
   </nav>
   
-  <form class="logout-form" method="post" action="{% url 'logout' %}">
-    {% csrf_token %}
-    <input class="logout-button" type="submit" value="Logout">
-  </form>
-  
-  <br><br>
+
   
   {% block content %}
   {% endblock %}
