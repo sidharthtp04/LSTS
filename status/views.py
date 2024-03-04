@@ -2,32 +2,15 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from .models import *
 from django.contrib.auth import authenticate, login
-from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 
-@csrf_exempt
-def login_view(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        
-        # Perform authentication
-        user = authenticate(request, username=username, password=password)
-        
-        if user is not None:
-            # If authentication is successful, log the user in
-            login(request, user)
-            return redirect('home')  # Redirect to the home page or any other desired page
-        else:
-            # If authentication fails, display an error message
-            error_message = 'Invalid username or password'
-            return render(request, 'login.html', {'error_message': error_message})
-    
-    return render(request, 'login.html')
-@csrf_exempt
+
+@login_required
 def home(request):
     return render(request,'computer/base.html')
-
+@login_required
 def computer(request):
     cs={
         'lab':lab.objects.all(),
@@ -70,16 +53,18 @@ def computer(request):
         comp.save()
         return redirect("display")
     return render(request,'computer/front.html',cs)
-
+@login_required
 def display(request):
     details={
         'details':computers.objects.all()
     }
     return render(request,'computer/display.html',details)
 
-
+@login_required
 def base(request):
     return render(request,'computer/base.html')
+
+   
 
 
 
