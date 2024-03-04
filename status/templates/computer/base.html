@@ -6,45 +6,55 @@
   </title>
   <style>
     body {
-      background-color: #f9f9f9;
-      color: #333;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #1a1a1a;
+      color: #fff;
+      font-family: 'Roboto', Arial, sans-serif;
       margin: 0;
       padding: 0;
     }
+    
     .header {
-      background-color: #34495e;
+      background-color: #3498db;
       color: #fff;
       text-align: center;
       padding: 20px 0;
     }
+    
     nav {
       background-color: #2c3e50;
       padding: 10px 0;
     }
+    
     nav ul {
       list-style-type: none;
       padding: 0;
       margin: 0;
       text-align: center;
     }
+    
     nav ul li {
-      display: inline;
+      display: inline-block;
+      margin: 0 10px;
     }
+    
     nav ul li a {
       display: inline-block;
-      padding: 10px 20px;
+      padding: 15px 20px;
       color: #fff;
       text-decoration: none;
       transition: all 0.3s ease;
+      border-radius: 5px;
     }
+    
     nav ul li a:hover {
-      background-color: #1abc9c;
+      background-color: #3498db;
     }
+    
     .dropdown {
       position: relative;
       display: inline-block;
     }
+    
     .dropdown-content {
       display: none;
       position: absolute;
@@ -53,10 +63,14 @@
       z-index: 1;
       top: 100%;
       left: 0;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
+    
     .dropdown:hover .dropdown-content {
       display: block;
     }
+    
     .dropdown-content a {
       color: #fff;
       padding: 12px 16px;
@@ -64,27 +78,13 @@
       display: block;
       transition: all 0.3s ease;
     }
+    
     .dropdown-content a:hover {
-      background-color: #1abc9c;
-    }
-    .logout-form {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-    }
-    .logout-button {
       background-color: #3498db;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.9em; /* Smaller font size */
-      padding: 8px 16px; /* Smaller padding */
-      transition: background-color 0.3s ease;
     }
-    .logout-button:hover {
-      background-color: #2980b9;
-    }
+    
+  
+
   </style>
   {% block style%}
   {% endblock %}
@@ -103,8 +103,23 @@
         <a href="#">Computer</a>
         <div class="dropdown-content">
           <a href="{%url 'computer'%}">Add Computer</a>
-          <a href="{%url 'display'%}">View Computer</a>
+          <a href="{%url 'display'%}">Computer Details</a>
         </div>
+      </li>
+      <li>
+        <a href="#">Complaint Reporting</a>
+      </li>
+      <li>
+        <a href="#">Report Status</a>
+      </li>
+      <li>
+        <a href="#">lab Slot Allotment</a>
+      </li>
+      <li>
+        <a href="#">Report Generation</a>
+      </li>
+      <li>
+        <a href=""></a>
       </li>
      
   </nav>

@@ -3,27 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Computer Details</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        tr:hover {
+            background-color: rgba(52, 152, 219, 0.2);
+        }
+    </style>
 </head>
 <body>
-    <table border="1">
-    <th>C_Label</th><th>LAB</th><th>Date of Purchase</th><th>CPU</th><th>Motherboard</th><th>Ram</th><th>Storage</th><th>SMPS</th><th>Keyboard</th><th>Mouse</th><th>Monitor</th><th>Status</th><th>Invoice No.</th><th>OS Type</th>
-    {%for i in details%}
-    <tr><td>{{i.c_label}}</td>
-    <td>{{i.lab.lab_name}}</td>
-    <td>{{i.dop}}</td>
-    <td>{{i.cpu.make}} {{i.cpu.series}}-{{i.cpu.generation}} Generation CPU @ {{i.cpu.speed}} x {{i.cpu.core_count}}</td>
-    <td>{{i.mb.mb_socket_type}} {{i.mb.max_ram_capacity}} {{i.mb.make}} {{i.mb.brand}}</td>
-    <td>{{i.ram.ram_size}} {{i.ram.make}} {{i.ram.speed}} {{i.ram.series}}</td>
-    <td>{{i.storage.storage_size}} {{i.storage.make}} {{i.storage.technology}} </td>
-    <td>{{i.smps.make}} {{i.smps.power}}W</td>
-    <td>{{i.keyboard.make}}</td>
-    <td>{{i.mouse.make}}</td>
-    <td>{{i.monitor.make}}</td>
-    <td>{{i.status}}</td>
-    <td>{{i.invoice_no}}</td>
-    <td>{{i.os_type}}</td>
-    </tr>
-    {%endfor%}
+    <table>
+        <thead>
+            <tr>
+                <th>C_Label</th>
+                <th>LAB</th>
+                <th>Date of Purchase</th>
+                <th>CPU</th>
+                <th>Motherboard</th>
+                <th>Ram</th>
+                <th>Storage</th>
+                <th>SMPS</th>
+                <th>Keyboard</th>
+                <th>Mouse</th>
+                <th>Monitor</th>
+                <th>Status</th>
+                <th>Invoice No.</th>
+                <th>OS Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in details %}
+                <tr>
+                    <td>{{ i.c_label }}</td>
+                    <td>{{ i.lab.lab_name }}</td>
+                    <td>{{ i.dop }}</td>
+                    <td>{{ i.cpu.make }} {{ i.cpu.series }}-{{ i.cpu.generation }} Gen CPU @ {{ i.cpu.speed }} x {{ i.cpu.core_count }}</td>
+                    <td>{{ i.mb.mb_socket_type }} {{ i.mb.max_ram_capacity }} {{ i.mb.make }} {{ i.mb.brand }}</td>
+                    <td>{{ i.ram.ram_size }} {{ i.ram.make }} {{ i.ram.speed }} {{ i.ram.series }}</td>
+                    <td>{{ i.storage.storage_size }} {{ i.storage.make }} {{ i.storage.technology }}</td>
+                    <td>{{ i.smps.make }} {{ i.smps.power }}W</td>
+                    <td>{{ i.keyboard.make }}</td>
+                    <td>{{ i.mouse.make }}</td>
+                    <td>{{ i.monitor.make }}</td>
+                    <td>{{ i.status }}</td>
+                    <td>{{ i.invoice_no }}</td>
+                    <td>{{ i.os_type }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>

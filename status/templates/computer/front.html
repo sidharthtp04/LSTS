@@ -3,80 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>status
+    <title>Add Computer Details</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+           
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        form {
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            width: 400px;
+            text-align: left;
+        }
+
+        #com {
+            color: #3498db;
+            margin-bottom: 20px;
+        }
+        label {
+            display: inline-block;
+            width: 100px; 
+            margin-right: 10px;
+        }
+
+        input, select {
+            width: calc(100% - 120px); 
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            display: inline-block;
+        }
+
+        input[type="submit"] {
+            background-color: #3498db;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+        h1{
+            background-color:antiquewhite;
+        }
+    </style>
+</head>
 <body>
-    <h1>Computer details</h1>
+    <header>
+        <h1 align="center">LSTS</h1>
+    </header>
+    <h1 align="center" id="com">Computer Details</h1>
+    <center>
     <form action="" method="POST">
-      {% csrf_token %}
-      <label for="clabel">C_Label:</label>
-        <input type="text" name="clabel"><br>
+        {% csrf_token %}
+        <label for="clabel">C_Label:</label>
+        <input type="text" name="clabel">
         <label for="dop">DOP:</label>
-        <input type="date" name="dop"><br>
-        <label for ="lab">lab</label>
-        <select id = "lab" name="lab">
+        <input type="date" name="dop">
+        <label for="lab">Lab:</label>
+        <select id="lab" name="lab">
             {% for i in lab %}
                 <option value="{{i.lab_id}}">{{i.lab_name}}</option>     
             {% endfor %}
-        </select><br>
-        <label for ='cpu_types'>CPU</label>
+        </select>
+        <label for="cpu">CPU:</label>
         <select name="cpu" id="cpu">
             {% for i in cpu %}
                 <option value="{{i.cpu_id}}">{{i.make}} {{i.series}}-{{i.generation}} Generation CPU @ {{i.speed}} x {{i.core_count}}</option>     
             {% endfor %}
-        </select><br>
-        <label for="mb_type">Motherboard</label>
+        </select>
+        <label for="mb">Motherboard:</label>
         <select name="mb" id="mb">
             {% for i in motherboard %}
                 <option value="{{i.mb_id}}">{{i.mb_socket_type}} {{i.max_ram_capacity}} {{i.make}} {{i.brand}}</option>     
             {% endfor %}
-        </select><br>
-        <label for ="ram">ram</label>
-        <select id = "ram" name="ram">
+        </select>
+        <label for="ram">RAM:</label>
+        <select id="ram" name="ram">
             {% for i in ram %}
                 <option value="{{i.ram_id}}">{{i.ram_size}} {{i.make}} {{i.speed}} {{i.series}}</option>     
             {% endfor %}
-        </select><br>
-        <label for ="storage">storage</label>
-        <select id = "storage" name="storage">
+        </select>
+        <label for="storage">Storage:</label>
+        <select id="storage" name="storage">
             {% for i in storage %}
                 <option value="{{i.storage_id}}">{{i.storage_size}} {{i.make}} {{i.technology}} </option>     
             {% endfor %}
-        </select><br>
-        <label for ="smps">smps</label>
-        <select id = "smps" name="smps">
+        </select>
+        <label for="smps">SMPS:</label>
+        <select id="smps" name="smps">
             {% for i in smps %}
                 <option value="{{i.smps_id}}">{{i.make}} {{i.power}} </option>     
             {% endfor %}
-        </select><br>
-        <label for ="keyboard">keyboard</label>
-        <select id = "keyboard" name="keyboard">
+        </select>
+        <label for="keyboard">Keyboard:</label>
+        <select id="keyboard" name="keyboard">
             {% for i in keyboard %}
                 <option value="{{i.keyboard_id}}">{{i.make}}</option>     
             {% endfor %}
-        </select><br>
-        <label for ="mouse">mouse </label>
-        <select id = "mouse" name="mouse">
+        </select>
+        <label for="mouse">Mouse:</label>
+        <select id="mouse" name="mouse">
             {% for i in mouse %}
                 <option value="{{i.mouse_id}}">{{i.make}} </option>     
             {% endfor %}
-        </select><br>
-        <label for ="monitor ">monitor </label>
-        <select id = "monitor" name="monitor">
+        </select>
+        <label for="monitor">Monitor:</label>
+        <select id="monitor" name="monitor">
             {% for i in monitor %}
                 <option value="{{i.monitor_id}}">{{i.make}} {{i.size}} {{i.resolution}}</option>     
             {% endfor %}
-        </select><br>
-        <label for="status">STATUS:</label>
-        <input type="text" name="status"><br>
+        </select>
+        <label for="status">Status:</label>
+        <input type="text" name="status">
         <label for="invoice_no">Invoice No:</label>
-        <input type="number" name="invoice_no"><br>
-        <label for="os_type">OS TYPE:</label>
-        <input type="text" name="os_type"><br>
-        <label>submit</label>
-        <input type="submit" >
-
-
-    </form>
+        <input type="number" name="invoice_no">
+        <label for="os_type">OS Type:</label>
+        <input type="text" name="os_type">
+        <input type="submit" value="Submit">
+    </form></center>
 </body>
 </html>

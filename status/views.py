@@ -68,6 +68,7 @@ def computer(request):
 
         comp=computers(c_label=clabel,lab=labe,cpu=cpue,ram=rame,storage=storagee,dop=dop,status=status,invoice_no=invoice_no,os_type=os_type,mb=mbe,smps=smpse,keyboard=keyboarde,mouse=mousee,monitor=monitore)
         comp.save()
+        return redirect("display")
     return render(request,'computer/front.html',cs)
 
 def display(request):
