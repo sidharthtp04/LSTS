@@ -1,6 +1,8 @@
 from django.db import models
 
 # Create your models here.
+
+
 class cpu_types(models.Model):
     cpu_id = models.AutoField(primary_key=True)
     make = models.CharField(max_length=15)

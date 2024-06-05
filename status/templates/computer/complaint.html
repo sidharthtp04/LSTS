@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <title>complaint</title>
+    </head>
+    <body>
+        <h1>Complaint</h1>
+        <form action="{% url 'submit' %}" method="POST">
+            {% csrf_token %}
+       
+            {% for i in complaints%}
+            <br>
+            <br>
+            {{i.c_label}}<br>
+            {{i.cpu.make}}<br>
+        
+            
+            <label for="compalint">Complaint:</label>
+            <input type="text" name="complaint"><br>
+            <label for="doc">Date of compalint</label>
+            <input type="date" name="doc"><br>
+            <label for="status">Status:</label>
+            <select id="status" name="status">
+                <option value="{{i.c_label}}_working">working</option>
+                <option value="{{i.c_label}}_not working"> not working</option>
+            </select><br>
+            <button type="submit">submit</button>
+            {%endfor%}
+        </form>
+    </body>
+</html>

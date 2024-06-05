@@ -63,8 +63,28 @@ def display(request):
 @login_required
 def base(request):
     return render(request,'computer/base.html')
+@login_required
+def lab1(request):
+    details={
+        'details':computers.objects.filter(lab_id=1)
+    }
+    return render(request,'computer/lab1.html',details)
+def complaint(request):
+    if request.method=="POST":
+        c_label=request.POST.get('c_Label')
+        print(c_label)
+        complaints={
+        'complaints':computers.objects.filter(c_label=c_label)
 
+    }
+    return render(request,'computer/complaint.html',complaints)
    
-
+def submit(request):
+    if request.method=="POST":
+        status_list=request.POST.getlist('status')
+        for label_status in status_list:
+            c_label,status=label_status.split('_')
+        computers.objects.filter(c_label=c_label).update(status=status)
+    return render(request,'computer/complaint.html')
 
 
