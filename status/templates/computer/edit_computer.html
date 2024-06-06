@@ -1,0 +1,109 @@
+<!-- edit_computer.html -->
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Computer Details</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+           
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        form {
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            width: 400px;
+            text-align: left;
+        }
+
+        #com {
+            color: #3498db;
+            margin-bottom: 20px;
+        }
+        label {
+            display: inline-block;
+            width: 100px; 
+            margin-right: 10px;
+        }
+
+        input, select {
+            width: calc(100% - 120px); 
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            display: inline-block;
+        }
+
+        input[type="submit"] {
+            background-color: #3498db;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+        h1{
+            background-color:antiquewhite;
+        }
+    </style>
+</head>
+<body>
+    <h1>Edit Computer</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="c_label">Label:</label>
+        <input type="text" id="c_label" name="c_label" value="{{ computer.c_label }}"><br>
+
+        <label for="lab_id">Lab:</label>
+        <input type="text" id="lab_id" name="lab_id" value="{{ computer.lab.lab_name }}"><br>
+
+        <label for="dop">Date of Purchase:</label>
+        <input type="date" id="dop" name="dop" value="{{ computer.dop }}"><br>
+
+        <label for="cpu_id">CPU:</label>
+        <input type="text" id="cpu_id" name="cpu_id" value="{{ computer.cpu.make }} {{ computer.cpu.series }}-{{ computer.cpu.generation }} Gen CPU @ {{ computer.cpu.speed }} x {{ computer.cpu.core_count }}"><br>
+
+        <label for="mb_id">Motherboard:</label>
+        <input type="text" id="mb_id" name="mb_id" value="{{ computer.mb.mb_socket_type }} {{ computer.mb.max_ram_capacity }} {{ computer.mb.make }} {{ computer.mb.brand }}"><br>
+
+        <label for="ram_id">RAM:</label>
+        <input type="text" id="ram_id" name="ram_id" value="{{ computer.ram.ram_size }} {{ computer.ram.make }} {{ computer.ram.speed }} {{ computer.ram.series }}"><br>
+
+        <label for="storage_id">Storage:</label>
+        <input type="text" id="storage_id" name="storage_id" value="{{ computer.storage.storage_size }} {{ computer.storage.make }} {{ computer.storage.technology }}"><br>
+
+        <label for="smps_id">SMPS:</label>
+        <input type="text" id="smps_id" name="smps_id" value="{{ computer.smps.make }} {{ computer.smps.power }}W"><br>
+
+        <label for="keyboard_id">Keyboard:</label>
+        <input type="text" id="keyboard_id" name="keyboard_id" value="{{ computer.keyboard.make }}"><br>
+
+        <label for="mouse_id">Mouse:</label>
+        <input type="text" id="mouse_id" name="mouse_id" value="{{ computer.mouse.make }}"><br>
+
+        <label for="monitor_id">Monitor:</label>
+        <input type="text" id="monitor_id" name="monitor_id" value="{{ computer.monitor.make }}"><br>
+
+        <label for="status">Status:</label>
+        <input type="text" id="status" name="status" value="{{ computer.status }}"><br>
+
+        <label for="invoice_no">Invoice No.:</label>
+        <input type="text" id="invoice_no" name="invoice_no" value="{{ computer.invoice_no }}"><br>
+
+        <label for="os_type">OS Type:</label>
+        <input type="text" id="os_type" name="os_type" value="{{ computer.os_type }}"><br>
+
+        <button type="submit">Save changes</button>
+    </form>
+</body>
+</html>

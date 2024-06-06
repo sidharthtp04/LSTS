@@ -1,8 +1,10 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, get_object_or_404,redirect
 from django.http import HttpResponse
 from .models import *
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from .models import computers
+from .forms import *
 
 # Create your views here.
 
@@ -86,5 +88,62 @@ def submit(request):
             c_label,status=label_status.split('_')
         computers.objects.filter(c_label=c_label).update(status=status)
     return render(request,'computer/complaint.html')
+def edit_computer(request, computer_id):
+    computer = get_object_or_404(computers, id=computer_id)
+    if request.method == 'POST':
+        form = computersForm(request.POST, instance=computer)
+        if form.is_valid():
+            form.save()
+            return redirect('computer_detail', computer_id=computer.id)
+    else:
+        form =computersForm(instance=computer)
+    return render(request, 'computer/edit_computer.html', {'form': form})
+def computer_detail(request, computer_id):
+    computer = get_object_or_404(computers, id=computer_id)
+    return render(request, 'computer/computer_detail.html', {'computer': computer})
+    
+
+
+def edit_computer(request, pk):
+    computer = get_object_or_404(computers, pk=pk)
+    if request.method == 'POST':
+        computer.c_label = request.POST.get('c_label')
+        computer.lab_id = request.POST.get('lab_id')
+        computer.dop = request.POST.get('dop')
+        computer.cpu_id = request.POST.get('cpu_id')
+        computer.mb_id = request.POST.get('mb_id')
+        computer.ram_id = request.POST.get('ram_id')
+        computer.storage_id = request.POST.get('storage_id')
+        computer.smps_id = request.POST.get('smps_id')
+        computer.keyboard_id = request.POST.get('keyboard_id')
+        computer.mouse_id = request.POST.get('mouse_id')
+        computer.monitor_id = request.POST.get('monitor_id')
+        computer.status = request.POST.get('status')
+        computer.invoice_no = request.POST.get('invoice_no')
+        computer.os_type = request.POST.get('os_type')
+        computer.save()
+        return redirect('computer_detail', pk=computer.pk)
+    return render(request, 'computer/edit_computer.html', {'computer': computer})
+
+    
+    
+def report(request):
+    cpu_filter = request.GET.get('cpu')
+    status_filter = request.GET.get('status')
+
+    computers_queryset = computers.objects.all()
+
+    if cpu_filter:
+        computers_queryset = computers_queryset.filter(cpu__cpu_id=cpu_filter)
+    if status_filter:
+        computers_queryset = computers_queryset.filter(status=status_filter)
+
+    details = {
+        'details': computers_queryset,
+        'cpu_types': cpu_types.objects.all(),
+        'statuses': computers.objects.values_list('status', flat=True).distinct(),
+    }
+    
+    return render(request, 'computer/report.html', details)
 
 

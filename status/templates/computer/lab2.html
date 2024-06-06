@@ -121,7 +121,7 @@
         <select id="monitor" name="monitor">
             {% for i in monitor %}
                 <option value="{{i.monitor_id}}">{{i.make}} {{i.size}} {{i.resolution}}</option>     
-            {% endfor %}
+            {% epath('accounts',include('django.contrib.auth.urls'))ndfor %}
         </select>
         <label for="status">Status:</label>
         <input type="text" name="status">

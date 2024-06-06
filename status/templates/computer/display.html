@@ -60,11 +60,13 @@
                 <th>Status</th>
                 <th>Invoice No.</th>
                 <th>OS Type</th>
+                <th>Edit</th> <!-- New column for edit -->
             </tr>
         </thead>
         <tbody>
             {% for i in details %}
                 <tr>
+                    
                     <td>{{ i.c_label }}</td>
                     <td>{{ i.lab.lab_name }}</td>
                     <td>{{ i.dop }}</td>
@@ -79,6 +81,7 @@
                     <td>{{ i.status}}</td>
                     <td>{{ i.invoice_no }}</td>
                     <td>{{ i.os_type }}</td>
+                    <td><a href="{% url 'edit_computer' pk=i.c_id %}">Edit</a></td> <!-- Link to edit page -->
                 </tr>
             {% endfor %}
         </tbody>
