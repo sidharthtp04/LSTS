@@ -78,13 +78,13 @@
         <label for="cpu">CPU:</label>
         <select name="cpu" id="cpu">
             {% for i in cpu %}
-                <option value="{{i.cpu_id}}">{{i.make}} {{i.series}}-{{i.generation}} Generation CPU @ {{i.speed}} x {{i.core_count}}</option>     
+                <option value="{{i.cpu_id}}">{{i.make}} {{i.series}}-{{i.generation}}  CPU @ {{i.speed}} x {{i.core_count}}</option>     
             {% endfor %}
         </select>
         <label for="mb">Motherboard:</label>
         <select name="mb" id="mb">
             {% for i in motherboard %}
-                <option value="{{i.mb_id}}">{{i.mb_socket_type}} {{i.max_ram_capacity}} {{i.make}} {{i.brand}}</option>     
+                <option value="{{i.mb_id}}">{{i.mb_socket_type}},{{i.max_ram_capacity}}GB,{{i.make}} </option>     
             {% endfor %}
         </select>
         <label for="ram">RAM:</label>

@@ -1,9 +1,7 @@
 from django import forms
-from .models import *
-
-
+from .models import computers
 
 class ComputerForm(forms.ModelForm):
     class Meta:
         model = computers
-        fields= '__all__'
+        fields = '__all__'

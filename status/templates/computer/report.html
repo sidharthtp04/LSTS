@@ -1,86 +1,139 @@
-{% extends 'computer/base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        select {
+            margin-right: 20px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f8f8f8;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Computer Report</h1>
+    <form action="{% url 'report' %}" method="GET">
+        <label for="cpu">Filter by CPU:</label>
+        <select name="cpu" id="cpu">
+            <option value="">All CPUs</option>
+            {% for cpu in cpu_types %}
+                <option value="{{ cpu.cpu_id }}">{{ cpu.make }} {{ cpu.series }}-{{ cpu.generation }}</option>
+            {% endfor %}
+        </select>
 
-{% block content %}
-  <h1>Computers</h1>
+        <label for="mb">Filter by Motherboard:</label>
+        <select name="mb" id="mb">
+            <option value="">All Motherboards</option>
+            {% for mb in mb_types %}
+                <option value="{{ mb.mb_id }}">{{ mb.mb_socket_type }}, {{ mb.max_ram_capacity }}GB, {{ mb.make }}</option>
+            {% endfor %}
+        </select>
 
-  <form method="get">
-    <label for="cpu">CPU Type:</label>
-    <select name="cpu" id="cpu">
-      <option value="">All</option>
-      {% for cpu in cpu_types %}
-        <option value="{{ cpu.cpu_id }}" {% if request.GET.cpu == cpu.cpu_id|stringformat:"s" %}selected{% endif %}>{{ cpu.cpu_make }}</option>
-      {% endfor %}
-    </select>
+        <label for="lab">Filter by Lab:</label>
+        <select name="lab" id="lab">
+            <option value="">All Labs</option>
+            {% for lab in lab_types %}
+                <option value="{{ lab.lab_id }}">{{ lab.lab_name }}</option>
+            {% endfor %}
+        </select>
 
-    <label for="cpu_make">CPU Make:</label>
-    <select name="cpu_make" id="cpu_make">
-      <option value="">All</option>
-      {% for make in cpu_makes %}
-        <option value="{{ make }}" {% if request.GET.cpu_make == make %}selected{% endif %}>{{ make }}</option>
-      {% endfor %}
-    </select>
+        <label for="status">Filter by Status:</label>
+        <select name="status" id="status">
+            <option value="">All Statuses</option>
+            {% for status in statuses %}
+                <option value="{{ status }}">{{ status }}</option>
+            {% endfor %}
+        </select>
 
-    <label for="cpu_series">CPU Series:</label>
-    <select name="cpu_series" id="cpu_series">
-      <option value="">All</option>
-      {% for series in cpu_series %}
-        <option value="{{ series }}" {% if request.GET.cpu_series == series %}selected{% endif %}>{{ series }}</option>
-      {% endfor %}
-    </select>
+        <input type="submit" value="Apply Filters">
+    </form>
 
-    <!-- Add similar dropdowns for CPU generation, motherboard capacity, make, brand, etc. -->
-
-    <label for="status">Status:</label>
-    <select name="status" id="status">
-      <option value="">All</option>
-      {% for status in statuses %}
-        <option value="{{ status }}" {% if request.GET.status == status %}selected{% endif %}>{{ status }}</option>
-      {% endfor %}
-    </select>
-
-    <button type="submit">Filter</button>
-  </form>
-
-  <table>
-    <thead>
-      <tr>
-        <th>C_Label</th>
-                <th>LAB</th>
+    <table>
+        <thead>
+            <tr>
+                <th>Label</th>
                 <th>Date of Purchase</th>
+                <th>Lab</th>
                 <th>CPU</th>
                 <th>Motherboard</th>
-                <th>Ram</th>
-                <th>Storage</th>
-                <th>SMPS</th>
-                <th>Keyboard</th>
-                <th>Mouse</th>
-                <th>Monitor</th>
                 <th>Status</th>
-                <th>invoice No.</th>
+                <th>Invoice No</th>
                 <th>OS Type</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for computer in details %}
-          <tr>
-              
-              <td>{{ computer.c_label }}</td>
-              <td>{{ computer.lab.lab_name }}</td>
-              <td>{{ computer.dop }}</td>
-              <td>{{ computer.cpu.make }} {{ computer.cpu.series }}-{{ computer.cpu.generation }} Gen CPU @ {{ computer.cpu.speed }} x {{ computer.cpu.core_count }}</td>
-              <td>{{ computer.mb.mb_socket_type }} {{ computer.mb.max_ram_capacity }} {{ computer.mb.make }} {{ computer.mb.brand }}</td>
-              <td>{{ computer.ram.ram_size }} {{ computer.ram.make }} {{ computer.ram.speed }} {{ computer.ram.series }}</td>
-              <td>{{ computer.storage.storage_size }} {{ computer.storage.make }} {{ computer.storage.technology }}</td>
-              <td>{{ computer.smps.make }} {{ computer.smps.power }}W</td>
-              <td>{{ computer.keyboard.make }}</td>
-              <td>{{ computer.mouse.make }}</td>
-              <td>{{ computer.monitor.make }}</td>
-              <td>{{ computer.status}}</td>
-              <td>{{ computer.invoice_no }}</td>
-              <td>{{ computer.os_type }}</td>
-              
-          </tr>
-      {% endfor %}
-  </tbody>
-  </table>
-{% endblock %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for computer in details %}
+                <tr>
+                    <td>{{ computer.c_label }}</td>
+                    <td>{{ computer.dop }}</td>
+                    <td>{{ computer.lab.lab_name }}</td>
+                    <td>{{ computer.cpu.make }} {{ computer.cpu.series }}-{{ computer.cpu.generation }}</td>
+                    <td>{{ computer.mb.mb_socket_type }}, {{ computer.mb.max_ram_capacity }}GB, {{ computer.mb.make }}</td>
+                    <td>{{ computer.status }}</td>
+                    <td>{{ computer.invoice_no }}</td>
+                    <td>{{ computer.os_type }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+
+    </table>
+</body>
+</html>
