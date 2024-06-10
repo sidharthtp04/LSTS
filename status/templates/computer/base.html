@@ -120,8 +120,9 @@
       <li class="dropdown">
         <a href="#">Complaint Reporting</a>
         <div class="dropdown-content">
-          <a href="{% url 'lab1' %}">LAB 1</a>
-          <a href="{% url 'lab2' %}">LAB 2</a>
+          <a href="{% url 'lab_selection' %}">Add Complaint</a>
+          
+          <a href="#">Problem Solved</a>
         </div>
       </li>
       <li>
@@ -131,7 +132,7 @@
         <a href="#">Lab Slot Allotment</a>
       </li>
       <li>
-        <a href="#">Report Generation</a>
+        <a href="{% url 'report_generation' %}">Report Generation</a>
       </li>
       <li>
         <form action="{% url 'logout' %}" method="post">

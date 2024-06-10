@@ -9,7 +9,7 @@ from .forms import *
 # Create your views here.
 
 
-@login_required
+@login_required()
 def home(request):
     return render(request,'computer/base.html')
 @login_required
@@ -77,16 +77,17 @@ def lab2(request):
         'details':computers.objects.filter(lab_id=2)
     }
     return render(request,'computer/lab2.html',details)
+@login_required
 def complaint(request):
     if request.method=="POST":
         c_label=request.POST.get('c_Label')
         print(c_label)
         complaints={
         'complaints':computers.objects.filter(c_label=c_label)
-
-    }
+        }
     return render(request,'computer/complaint.html',complaints)
-   
+
+@login_required
 def submit(request):
     if request.method=="POST":
         status_list=request.POST.getlist('status')
@@ -94,6 +95,7 @@ def submit(request):
             c_label,status=label_status.split('_')
         computers.objects.filter(c_label=c_label).update(status=status)
     return render(request,'computer/complaint.html')
+@login_required
 def edit_computer(request, computer_id):
     computer = get_object_or_404(computers, id=computer_id)
     if request.method == 'POST':
@@ -104,11 +106,9 @@ def edit_computer(request, computer_id):
     else:
         form =ComputerForm(instance=computer)
     return render(request, 'computer/edit_computer.html', {'form': form})
-def computer_detail(request, computer_id):
-    computer = get_object_or_404(computers, id=computer_id)
-    return render(request, 'computer/computer_detail.html', {'computer': computer})
-    
 
+    
+@login_required
 def edit_computer(request, pk):
     computer = get_object_or_404(computers, pk=pk)
     
@@ -122,7 +122,7 @@ def edit_computer(request, pk):
     return render(request, 'computer/edit_computer.html', {'form': form})
     
 
-
+@login_required
 def report(request):
     cpu_filter = request.GET.get('cpu')
     status_filter = request.GET.get('status')
@@ -149,4 +149,13 @@ def report(request):
     }
     
     return render(request, 'computer/report.html', context)
+@login_required
+def lab_selection(request):
+    return render(request, 'computer/lab_selection.html')
+@login_required
+def report_generation(request):
+    return render(request,'computer/report_generation.html')
+
+
+
 

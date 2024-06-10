@@ -90,6 +90,7 @@
         <label for="ram">RAM:</label>
         <select id="ram" name="ram">
             {% for i in ram %}
+                <option value="none">None</option>
                 <option value="{{i.ram_id}}">{{i.ram_size}} {{i.make}} {{i.speed}} {{i.series}}</option>     
             {% endfor %}
         </select>

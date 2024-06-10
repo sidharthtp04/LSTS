@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lab Selection</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fafafa;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+      text-align: center;
+    }
+    
+    h1 {
+      color: #333;
+    }
+    
+    .lab-link {
+      display: inline-block;
+      margin: 10px;
+      padding: 15px 30px;
+      background-color: #3498db;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+    
+    .lab-link:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Lab Selection</h1>
+    <a href="{% url 'lab1' %}" class="lab-link">Lab 1</a>
+    <a href="{% url 'lab2' %}" class="lab-link">Lab 2</a>
+  </div>
+</body>
+</html>
