@@ -63,12 +63,11 @@
             </tr>
         </thead>
         <tbody>
-            {% for i in complaints %}
+            {% for i in result %}
                 <tr>
-                    <td>{{ i.c_label }}</td>
-                    <td>{{i.complaint}}</td>
-                    <td>{{i.doc}}</td>
-                    
+                    <td>{{ i.computer.c_label}}</td>
+                    <td>{{i.complaint_details}}</td>
+                    <td>{{i.complaint_date}}</td>
                 </tr>
             {% endfor %}
         </tbody>

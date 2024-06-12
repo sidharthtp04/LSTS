@@ -13,8 +13,8 @@ urlpatterns = [
     path('edit/<int:pk>/', views.edit_computer, name='edit_computer'),
     path('report',views.report,name='report'),
     path('lab_selection/',views.lab_selection,name='lab_selection'),
-    path('report_generation',views.report_generation,name='report_generation')
- 
+    path('report_generation',views.report_generation,name='report_generation'),
+    path('repair',views.repair,name='repair')
     
     
 ]

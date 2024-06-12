@@ -10,10 +10,8 @@ class cpu_types(models.Model):
     speed = models.CharField(max_length=15)
     series = models.CharField(max_length=20)
     core_count = models.IntegerField()
-
     def __str__(self):
         return f"{self.make} {self.series}-{self.generation} CPU @ {self.speed} x {self.core_count}"
-
 class motherboard_type(models.Model):
     mb_id = models.AutoField(primary_key=True)
     mb_socket_type= models.CharField(max_length=15)
@@ -51,7 +49,7 @@ class mouse(models.Model):
     mouse_id =  models.AutoField(primary_key=True)
     make =  models.CharField(max_length=15)
     def __str__(self):
-        return f"{self.make} "
+        return f"{self.make}"
 class monitor(models.Model):
     monitor_id =  models.AutoField(primary_key=True)
     make =  models.CharField(max_length=15)
@@ -90,21 +88,20 @@ class computers(models.Model):
     mouse=models.ForeignKey(mouse,on_delete=models.CASCADE)
     monitor=models.ForeignKey(monitor,on_delete=models.CASCADE)
     
+class Complaint(models.Model):
+    computer = models.ForeignKey(computers, related_name='computer_complaints', on_delete=models.CASCADE)
+    complaint_details = models.CharField(max_length=50)
+    complaint_date = models.DateField()
 
 
-
-
-class repair(models.Model):
+class Repair(models.Model):
     repair_id = models.AutoField(primary_key=True)
-    c_id = models.ForeignKey(computers,on_delete=models.CASCADE)
-    complaint=models.CharField(max_length=50)
-    status=models.CharField(max_length=20)
-    complaint_date=models.DateField()
-    repair_cost=models.IntegerField()
-    technician_address=models.TextField()
-    repair_date=models.DateField()
-    invoice_no=models.IntegerField()
-
-    def __str__(self):
-        return f'Repair {self.repair_id} for Computer {self.c_id}'
+    computer = models.ForeignKey(computers, on_delete=models.CASCADE)
+    complaint = models.CharField(max_length=50)
+    status = models.CharField(max_length=20)
+    complaint_date = models.ForeignKey(Complaint, on_delete=models.CASCADE)
+    repair_cost = models.IntegerField()
+    technician_address = models.TextField()
+    repair_date = models.DateField()
+    invoice_no = models.IntegerField()
 

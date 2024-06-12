@@ -90,13 +90,13 @@
             {{ i.invoice_no }}<br>
             <label for="os_type">OS Type:</label>
             {{ i.os_type }}<br>
-            <label for="compalint">Complaint:</label>
-            <input type="text" name="complaint"><br>
-            <label for="doc">Date of compalint</label>
-            <input type="date" name="doc"><br>
+            <label for="repair">Repair:</label>
+            <input type="text" name="repair"><br>
+            <label for="dor">Date of Repair</label>
+            <input type="date" name="dor"><br>
             <label for="status">Status:</label>
-            <select id="status" name="status">
-                <option value="{{i.c_id}}" > not working</option>
+            <select id="status" name="status">yy
+                <option value="{{i.c_id}}" >working</option>
             </select><br>
             <button id="submit" type="submit">submit</button>
             {%endfor%}

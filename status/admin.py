@@ -13,4 +13,4 @@ admin.site.register(lab)
 admin.site.register(programme)
 admin.site.register(lab_timetable)
 admin.site.register(computers)
-admin.site.register(repair)
+

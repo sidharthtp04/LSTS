@@ -154,8 +154,22 @@ def lab_selection(request):
     return render(request, 'computer/lab_selection.html')
 @login_required
 def report_generation(request):
-    return render(request,'computer/report_generation.html')
+    if request.method=='POST':
+        complaint=request.POST.get('complaint')
+        date=request.POST.get('doc')
+        status=request.POST.get('status')
+        compu=computers.objects.get(c_id=status)
+        compu.status="Not Working"
+        compu.save()
+        cmp=Complaint(computer=compu,complaint_details=complaint,complaint_date=date)
+        cmp.save()
+        
+        result={
+            'result':Complaint.objects.all()
+        }
+        return render(request,'computer/report_generation.html',result)
 
-
+def repair(request):
+    return render(request, 'computer/repair.html')
 
 
