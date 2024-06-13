@@ -118,21 +118,19 @@
         </div>
       </li>
       <li class="dropdown">
-        <a href="#">Complaint Reporting</a>
-        <div class="dropdown-content">
-          <a href="{% url 'lab_selection' %}">Add Complaint</a>
-          
-          <a href="#">Problem Solved</a>
-        </div>
+        <a href="{% url 'complaint_report' %}">Complaint Reporting</a>
+        
       </li>
-      <li>
-        <a href="{% url 'report' %}">Report Status</a>
-      </li>
+      
       <li>
         <a href="#">Lab Slot Allotment</a>
       </li>
-      <li>
-        <a href="{% url 'report_generation' %}">Report Generation</a>
+      <li class="dropdown">
+        <a href="#">Report Generation</a>
+        <div class="dropdown-content">
+          <a href="{% url 'report' %}">System Details</a>
+          <a href="{% url 'display' %}">Repair Details</a>
+        </div>
       </li>
       <li>
         <form action="{% url 'logout' %}" method="post">

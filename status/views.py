@@ -65,27 +65,19 @@ def display(request):
 @login_required
 def base(request):
     return render(request,'computer/base.html')
+
 @login_required
-def lab1(request):
-    details={
-        'details':computers.objects.filter(lab_id=1)
-    }
-    return render(request,'computer/lab1.html',details)
-@login_required
-def lab2(request):
-    details={
-        'details':computers.objects.filter(lab_id=2)
-    }
-    return render(request,'computer/lab2.html',details)
-@login_required
-def complaint(request):
-    if request.method=="POST":
-        c_label=request.POST.get('c_Label')
-        print(c_label)
-        complaints={
-        'complaints':computers.objects.filter(c_label=c_label)
-        }
-    return render(request,'computer/complaint.html',complaints)
+def complaint(request,pk):
+    computer = get_object_or_404(computers, pk=pk)
+    
+    if request.method == "POST":
+        form = ComputerForm(request.POST, instance=computer)
+        if form.is_valid():
+            form.save()
+            return redirect('details')  # or wherever you want to redirect after a successful edit
+    else:
+        form = ComputerForm(instance=computer)
+    return render(request, 'computer/complaint.html', {'form': form})
 
 @login_required
 def submit(request):
@@ -153,8 +145,12 @@ def report(request):
 def lab_selection(request):
     return render(request, 'computer/lab_selection.html')
 @login_required
-def report_generation(request):
-    return render(request,'computer/report_generation.html')
+def complaint_report(request):
+    details={
+        'details':computers.objects.all()
+    }
+    return render(request,'computer/complaint_report.html',details)
+
 
 
 

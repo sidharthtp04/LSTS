@@ -57,7 +57,7 @@
     <body>
         <h1 align="center" id="com">Complaint Details</h1>
         <center>
-            <form action="{% url 'report_generation' %}" method="POST">
+            <form action="" method="POST">
                 {% csrf_token %}
                 {% for i in complaints%}
                 <label for="clabel">C_Label:</label>
