@@ -11,6 +11,7 @@ urlpatterns = [
     path('edit/<int:pk>/', views.edit_computer, name='edit_computer'),
     path('report',views.report,name='report'),
     path('complaint_report',views.complaint_report,name='complaint_report'),
+   path('report_generation/', views.report_generation, name='report_generation'),
     
  
     

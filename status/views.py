@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from .models import computers
 from .forms import *
+from django.contrib import messages
 
 # Create your views here.
 
@@ -67,17 +68,29 @@ def base(request):
     return render(request,'computer/base.html')
 
 @login_required
-def complaint(request,pk):
+def complaint(request, pk):
     computer = get_object_or_404(computers, pk=pk)
     
     if request.method == "POST":
-        form = ComputerForm(request.POST, instance=computer)
+        form = ComplaintForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('details')  # or wherever you want to redirect after a successful edit
+            complaint = form.save(commit=False)
+            complaint.computer = computer
+            complaint.save()
+
+            # Update the computer status to 'not working'
+            computer.status = 'not working'
+            computer.save()
+            print(f"Updated computer {computer.c_label} status to {computer.status}")
+
+            return redirect('report_generation')  # Adjust the redirect as needed
+        else:
+            print("Form is not valid")
     else:
-        form = ComputerForm(instance=computer)
-    return render(request, 'computer/complaint.html', {'form': form})
+        form = ComplaintForm(initial={'computer': computer})
+    
+    return render(request, 'computer/complaint.html', {'form': form, 'computer': computer})
+
 
 @login_required
 def submit(request):
@@ -87,17 +100,6 @@ def submit(request):
             c_label,status=label_status.split('_')
         computers.objects.filter(c_label=c_label).update(status=status)
     return render(request,'computer/complaint.html')
-@login_required
-def edit_computer(request, computer_id):
-    computer = get_object_or_404(computers, id=computer_id)
-    if request.method == 'POST':
-        form = ComputerForm(request.POST, instance=computer)
-        if form.is_valid():
-            form.save()
-            return redirect('computer_detail', computer_id=computer.id)
-    else:
-        form =ComputerForm(instance=computer)
-    return render(request, 'computer/edit_computer.html', {'form': form})
 
     
 @login_required
@@ -147,11 +149,18 @@ def lab_selection(request):
 @login_required
 def complaint_report(request):
     details={
-        'details':computers.objects.all()
+        'details':computers.objects.all()   
     }
     return render(request,'computer/complaint_report.html',details)
+def report_generation(request):
+    # Fetch all complaints with related computer details
+    complaints = Complaint.objects.select_related('computer').all()
 
+    context = {
+        'result': complaints
+    }
 
+    return render(request, 'computer/report_generation.html', context)
 
 
 
