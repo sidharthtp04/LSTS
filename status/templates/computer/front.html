@@ -1,139 +1,176 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Computer Details</title>
+{% extends 'computer/base.html' %}
+
+{% block title %}Add Computer Details{% endblock %}
+
+{% block content %}
     <style>
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f4f4f4;
             margin: 0;
-            padding: 0;
-           
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
         }
 
-        form {
+        .container {
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             padding: 20px;
-            width: 400px;
-            text-align: left;
+            max-width: 600px;
+            margin: 20px auto;
         }
 
-        #com {
-            color: #3498db;
-            margin-bottom: 20px;
-        }
-        label {
-            display: inline-block;
-            width: 100px; 
-            margin-right: 10px;
+        .form-group {
+            margin-bottom: 15px;
         }
 
-        input, select {
-            width: calc(100% - 120px); 
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-group select,
+        .form-group input[type="text"],
+        .form-group input[type="date"],
+        .form-group input[type="number"] {
+            width: calc(100% - 10px);
             padding: 8px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
 
-        input[type="submit"] {
+        .form-group input[type="submit"] {
             background-color: #3498db;
             color: #fff;
             cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
         }
 
-        input[type="submit"]:hover {
+        .form-group input[type="submit"]:hover {
             background-color: #2980b9;
         }
-        h1{
-            background-color:antiquewhite;
-        }
     </style>
-</head>
-<body>
-    <header>
-        <h1 align="center">LSTS</h1>
-    </header>
-    <h1 align="center" id="com">Computer Details</h1>
-    <center>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <label for="clabel">C_Label:</label>
-        <input type="text" name="clabel">
-        <label for="dop">DOP:</label>
-        <input type="date" name="dop">
-        <label for="lab">Lab:</label>
-        <select id="lab" name="lab">
-            {% for i in lab %}
-                <option value="{{i.lab_id}}">{{i.lab_name}}</option>     
-            {% endfor %}
-        </select>
-        <label for="cpu">CPU:</label>
-        <select name="cpu" id="cpu">
-            {% for i in cpu %}
-                <option value="{{i.cpu_id}}">{{i.make}} {{i.series}}-{{i.generation}}  CPU @ {{i.speed}} x {{i.core_count}}</option>     
-            {% endfor %}
-        </select>
-        <label for="mb">Motherboard:</label>
-        <select name="mb" id="mb">
-            {% for i in motherboard %}
-                <option value="{{i.mb_id}}">{{i.mb_socket_type}},{{i.max_ram_capacity}}GB,{{i.make}} </option>     
-            {% endfor %}
-        </select>
-        <label for="ram">RAM:</label>
-        <select id="ram" name="ram">
-            {% for i in ram %}
-                <option value="none">None</option>
-                <option value="{{i.ram_id}}">{{i.ram_size}} {{i.make}} {{i.speed}} {{i.series}}</option>     
-            {% endfor %}
-        </select>
-        <label for="storage">Storage:</label>
-        <select id="storage" name="storage">
-            {% for i in storage %}
-                <option value="{{i.storage_id}}">{{i.storage_size}} {{i.make}} {{i.technology}} </option>     
-            {% endfor %}
-        </select>
-        <label for="smps">SMPS:</label>
-        <select id="smps" name="smps">
-            {% for i in smps %}
-                <option value="{{i.smps_id}}">{{i.make}} {{i.power}} </option>     
-            {% endfor %}
-        </select>
-        <label for="keyboard">Keyboard:</label>
-        <select id="keyboard" name="keyboard">
-            {% for i in keyboard %}
-                <option value="{{i.keyboard_id}}">{{i.make}}</option>     
-            {% endfor %}
-        </select>
-        <label for="mouse">Mouse:</label>
-        <select id="mouse" name="mouse">
-            {% for i in mouse %}
-                <option value="{{i.mouse_id}}">{{i.make}} </option>     
-            {% endfor %}
-        </select>
-        <label for="monitor">Monitor:</label>
-        <select id="monitor" name="monitor">
-            {% for i in monitor %}
-                <option value="{{i.monitor_id}}">{{i.make}} {{i.size}} {{i.resolution}}</option>     
-            {% endfor %}
-        </select>
-        <label for="status">Status:</label>
-         <select name="status" id="status">
-            <option value="working">working</option>
-            <option value="not working">not working</option>
-         </select>
-        <label for="invoice_no">Invoice No:</label>
-        <input type="number" name="invoice_no">
-        <label for="os_type">OS Type:</label>
-        <input type="text" name="os_type">
-        <input type="submit" value="Submit">
-    </form></center>
-</body>
-</html>
+
+    <div class="container">
+        <h1 align="center" id="com">Computer Details</h1>
+        <form action="" method="POST">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="clabel">C_Label:</label>
+                <input type="text" name="clabel" id="clabel" required>
+            </div>
+
+            <div class="form-group">
+                <label for="dop">DOP:</label>
+                <input type="date" name="dop" id="dop" required>
+            </div>
+
+            <div class="form-group">
+                <label for="lab">Lab:</label>
+                <select id="lab" name="lab" required>
+                    {% for i in lab %}
+                        <option value="{{i.lab_id}}">{{i.lab_name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="cpu">CPU:</label>
+                <select name="cpu" id="cpu" required>
+                    {% for i in cpu %}
+                        <option value="{{i.cpu_id}}">{{i.make}} {{i.series}}-{{i.generation}}  CPU @ {{i.speed}} x {{i.core_count}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="mb">Motherboard:</label>
+                <select name="mb" id="mb" required>
+                    {% for i in motherboard %}
+                        <option value="{{i.mb_id}}">{{i.mb_socket_type}}, {{i.max_ram_capacity}}GB, {{i.make}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ram">RAM:</label>
+                <select id="ram" name="ram" required>
+                    <option value="none">None</option>
+                    {% for i in ram %}
+                        <option value="{{i.ram_id}}">{{i.ram_size}} {{i.make}} {{i.speed}} {{i.series}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="storage">Storage:</label>
+                <select id="storage" name="storage" required>
+                    {% for i in storage %}
+                        <option value="{{i.storage_id}}">{{i.storage_size}} {{i.make}} {{i.technology}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="smps">SMPS:</label>
+                <select id="smps" name="smps" required>
+                    {% for i in smps %}
+                        <option value="{{i.smps_id}}">{{i.make}} {{i.power}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="keyboard">Keyboard:</label>
+                <select id="keyboard" name="keyboard" required>
+                    {% for i in keyboard %}
+                        <option value="{{i.keyboard_id}}">{{i.make}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="mouse">Mouse:</label>
+                <select id="mouse" name="mouse" required>
+                    {% for i in mouse %}
+                        <option value="{{i.mouse_id}}">{{i.make}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="monitor">Monitor:</label>
+                <select id="monitor" name="monitor" required>
+                    {% for i in monitor %}
+                        <option value="{{i.monitor_id}}">{{i.make}} {{i.size}} {{i.resolution}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="status">Status:</label>
+                <select name="status" id="status" required>
+                    <option value="working">Working</option>
+                    <option value="not working">Not Working</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="invoice_no">Invoice No:</label>
+                <input type="number" name="invoice_no" id="invoice_no" required>
+            </div>
+
+            <div class="form-group">
+                <label for="os_type">OS Type:</label>
+                <input type="text" name="os_type" id="os_type" required>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Submit">
+            </div>
+        </form>
+    </div>
+{% endblock %}

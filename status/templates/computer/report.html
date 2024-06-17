@@ -1,71 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Computer Report</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        form {
-            margin-bottom: 20px;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        label {
-            margin-right: 10px;
-            font-weight: bold;
-        }
-        select {
-            margin-right: 20px;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        input[type="submit"] {
-            padding: 10px 20px;
-            background-color: #28a745;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        input[type="submit"]:hover {
-            background-color: #218838;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        th, td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-        th {
-            background-color: #f8f8f8;
-            font-weight: bold;
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-    </style>
-</head>
-<body>
+{% extends 'computer/base.html' %}
+
+{% block title %}Computer Report{% endblock %}
+
+{% block content %}
     <h1>Computer Report</h1>
     <form action="{% url 'report' %}" method="GET">
         <label for="cpu">Filter by CPU:</label>
@@ -131,9 +68,4 @@
             {% endfor %}
         </tbody>
     </table>
-</body>
-</html>
-
-    </table>
-</body>
-</html>
+{% endblock %}

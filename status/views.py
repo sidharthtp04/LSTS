@@ -152,6 +152,7 @@ def complaint_report(request):
         'details':computers.objects.all()   
     }
     return render(request,'computer/complaint_report.html',details)
+@login_required()
 def report_generation(request):
     # Fetch all complaints with related computer details
     complaints = Complaint.objects.select_related('computer').all()
@@ -163,4 +164,9 @@ def report_generation(request):
     return render(request, 'computer/report_generation.html', context)
 
 
-
+@login_required
+def mark_as_repaired(request, pk):
+    computer = get_object_or_404(computers, pk=pk)
+    computer.status = 'working'  # Change status to "working"
+    computer.save()
+    return redirect('complaint_report')  # Adjust the name of the redirect as necessary
