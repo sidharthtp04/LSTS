@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from .models import computers
 from .forms import *
 from django.contrib import messages
+from django.utils import timezone
 
 # Create your views here.
 
@@ -152,21 +153,96 @@ def complaint_report(request):
         'details':computers.objects.all()   
     }
     return render(request,'computer/complaint_report.html',details)
-@login_required()
-def report_generation(request):
-    # Fetch all complaints with related computer details
-    complaints = Complaint.objects.select_related('computer').all()
+
+
+
+@login_required
+def repair_detail(request, pk):
+    computer = get_object_or_404(computers, pk=pk)
+    complaints = Complaint.objects.filter(computer=computer)
+
+    if request.method == 'POST':
+        form = RepairForm(request.POST)
+        if form.is_valid():
+            repair = form.save(commit=False)
+            repair.computer = computer  # Link the repair to the correct computer
+            repair.save()
+
+            # Update computer status and any other necessary logic
+            computer.status = 'working'
+            computer.save()
+
+            return redirect('report_generation')  # Redirect after successful form submission
+    else:
+        form = RepairForm()
 
     context = {
-        'result': complaints
+        'computer': computer,
+        'complaints': complaints,
+        'form': form
+    }
+
+    return render(request, 'computer/repair_detail.html', context)
+
+@login_required
+def report_generation(request):
+    complaints = Complaint.objects.select_related('computer').all()
+    results = []
+
+    for complaint in complaints:
+        repair = Repair.objects.filter(computer=complaint.computer).first()
+
+        if repair:
+            reason = repair.reason
+            repair_date = repair.repair_date
+            status = 'Repaired'
+        else:
+            reason = 'Pending'
+            repair_date = None
+            status = 'Pending'
+
+        results.append({
+            'repair_id': repair.repair_id if repair else None,
+            'complaint_id': complaint.id,  # Ensure complaint_id is available
+            'computer_label': complaint.computer.c_label,
+            'complaint_details': complaint.complaint_details,
+            'complaint_date': complaint.complaint_date,
+            'repair_reason': reason,
+            'repair_date': repair_date,
+            'status': status,
+        })
+
+    context = {
+        'results': results
     }
 
     return render(request, 'computer/report_generation.html', context)
 
+@login_required
+def delete_repair(request, pk):
+    repair = get_object_or_404(Repair, pk=pk)
+    complaint = get_object_or_404(Complaint, computer=repair.computer)
+    computer = repair.computer
+
+    repair.delete()
+
+    remaining_repairs = Repair.objects.filter(computer=computer).exists()
+    if not remaining_repairs:
+        computer.status = 'not working'
+        computer.save()
+
+    return redirect('report_generation')
 
 @login_required
-def mark_as_repaired(request, pk):
-    computer = get_object_or_404(computers, pk=pk)
-    computer.status = 'working'  # Change status to "working"
-    computer.save()
-    return redirect('complaint_report')  # Adjust the name of the redirect as necessary
+def delete_complaint(request, pk):
+    complaint = get_object_or_404(Complaint, pk=pk)
+    computer = complaint.computer
+
+    complaint.delete()
+
+    remaining_complaints = Complaint.objects.filter(computer=computer).exists()
+    if not remaining_complaints:
+        computer.status = 'working'
+        computer.save()
+
+    return redirect('report_generation')

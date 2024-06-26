@@ -1,24 +1,56 @@
 {% extends 'computer/base.html' %}
 
 {% block title %}
-    Computer Details Report
+    Computer Repair Report
 {% endblock %}
 
 {% block content %}
     <table>
         <thead>
             <tr>
-                <th>C_Label</th>
-                <th>complaint</th>
-                <th>Date of complaint</th>
+                <th>Repair ID</th>
+                <th>Computer Label</th>
+                <th>Complaint Details</th>
+                <th>Complaint Date</th>
+                <th>Repair Reason</th>
+                <th>Repair Date</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            {% for i in result %}
+            {% for result in results %}
                 <tr>
-                    <td>{{ i.computer.c_label}}</td>
-                    <td>{{i.complaint_details}}</td>
-                    <td>{{i.complaint_date}}</td>
+                    <td>{{ result.repair_id }}</td>
+                    <td>{{ result.computer_label }}</td>
+                    <td>{{ result.complaint_details }}</td>
+                    <td>{{ result.complaint_date }}</td>
+                    <td>
+                        {% if result.repair_reason %}
+                            {{ result.repair_reason }}
+                        {% else %}
+                            Pending
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if result.repair_date %}
+                            {{ result.repair_date }}
+                        {% else %}
+                            Pending
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if result.repair_id %}
+                            <form action="{% url 'delete_repair' result.repair_id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit">Delete Repair</button>
+                            </form>
+                        {% else %}
+                            <form action="{% url 'delete_complaint' result.complaint_id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit">Delete Complaint</button>
+                            </form>
+                        {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>

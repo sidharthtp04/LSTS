@@ -12,7 +12,10 @@ urlpatterns = [
     path('report',views.report,name='report'),
     path('complaint_report',views.complaint_report,name='complaint_report'),
     path('report_generation/', views.report_generation, name='report_generation'),
-    path('repaired/<int:pk>/', views.mark_as_repaired, name='mark_as_repaired'),
+    path('repair_detail/<int:pk>/', views.repair_detail, name='repair_detail'),
+    path('delete_repair/<int:pk>/', views.delete_repair, name='delete_repair'),
+    path('delete_complaint/<int:pk>/', views.delete_complaint, name='delete_complaint'),
+    
     
  
     

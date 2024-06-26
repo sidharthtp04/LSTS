@@ -1,66 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Computer</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
+{% extends 'computer/base.html' %}
 
-        form {
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            padding: 20px;
-            width: 400px;
-            text-align: left;
-        }
+{% block title %}Edit Computer{% endblock %}
 
-        #com {
-            color: #3498db;
-            margin-bottom: 20px;
-        }
+{% block content %}
 
-        label {
-            display: inline-block;
-            width: 100px;
-            margin-right: 10px;
-        }
-
-        input, select {
-            width: calc(100% - 120px);
-            padding: 8px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-            display: inline-block;
-        }
-
-        input[type="submit"] {
-            background-color: #3498db;
-            color: #fff;
-            cursor: pointer;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #2980b9;
-        }
-        h1 {
-            background-color: antiquewhite;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <h1 align="center">LSTS</h1>
-    </header>
     <h1 align="center" id="com">Edit Computer Details</h1>
     <center>
         <form method="post">
@@ -70,5 +13,4 @@
         </form>
         <a href="{% url 'display' %}">Cancel</a>
     </center>
-</body>
-</html>
+{% endblock %}
