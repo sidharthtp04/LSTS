@@ -75,6 +75,7 @@ class lab_timetable(models.Model):
     hour=models.TimeField()
     programme=models.ForeignKey(programme,on_delete=models.CASCADE)
     year = models.IntegerField()
+    
 class computers(models.Model):
     c_id=models.AutoField(primary_key=True)
     c_label=models.CharField(max_length=20)

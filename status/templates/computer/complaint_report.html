@@ -19,7 +19,9 @@
                 <tr>
                     <td>{{ computer.c_label }}</td>
                     <td>{{ computer.lab.lab_name }}</td>
-                    <td>{{ computer.status }}</td>
+                    <td style="color: {% if computer.status == 'working' %}green{% else %}red{% endif %};">
+                        {{ computer.status }}
+                    </td>
                     <td><a href="{% url 'comp' pk=computer.c_id %}">Complaint</a></td>
                     <td><a href="{% url 'repair_detail' pk=computer.c_id %}">Repaired</a></td>
                 </tr>

@@ -68,10 +68,13 @@ def display(request):
 def base(request):
     return render(request,'computer/base.html')
 
-@login_required
 def complaint(request, pk):
     computer = get_object_or_404(computers, pk=pk)
     
+    # Check if computer status is already 'not working'
+    if computer.status == 'not working':
+        return redirect('complaint_report')
+
     if request.method == "POST":
         form = ComplaintForm(request.POST)
         if form.is_valid():
