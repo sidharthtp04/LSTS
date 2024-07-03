@@ -65,11 +65,9 @@
                     <td>{{ i.status }}</td>
                     <td>{{ i.invoice_no }}</td>
                     <td>{{ i.os_type }}</td>
-                    <td><a href="{% url 'edit_computer' pk=i.c_id %}" class="edit-button">Edit</a> | <a href="{% url 'change_status_to_trashed' i.c_id %}" class="edit-button">Delete</a> | <a href="{% url 'complaint_report' i.c_id %}" class="edit-button">Report</a> </td>
+                    <td><a href="{% url 'complaint_report' i.c_id %}" class="edit-button">Report</a></td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
-
-    <a href="{% url 'trashed_computers' %}"><input id="d1" class="delete-button" type="button" value="Trash" /></a>
 {% endblock %}

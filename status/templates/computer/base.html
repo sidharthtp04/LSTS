@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,11 +7,15 @@
     <title>{% block title %}Lab Management System{% endblock %}</title>
     <style>
         body {
+            background-size: cover; /* Cover the entire background */
+            background-position: center; /* Center the background image */
+            background-repeat: no-repeat; /* Do not repeat the background image */
             background-color: #faf8f8;
             color: #333;
             font-family: 'Roboto', Arial, sans-serif;
             margin: 0;
             padding: 0;
+            height: 100vh; /* Adjusts the height to the viewport height */
         }
 
         .header {
@@ -133,6 +138,7 @@
     </div>
     <nav>
         <ul>
+            {% if is_li_group %}
             <li><a href="{% url 'home' %}">Home</a></li>
             <li class="dropdown">
                 <a href="#">Computer</a>
@@ -143,19 +149,33 @@
             </li>
             <li><a href="{% url 'complaint_report' %}">Complaint Reporting</a></li>
             <li><a href="#">Lab Slot Allotment</a></li>
+            {% endif %}
             <li class="dropdown">
                 <a href="#">Report Generation</a>
                 <div class="dropdown-content">
                     <a href="{% url 'report' %}">System Details</a>
+                    {% if is_li_group %}
                     <a href="{% url 'report_generation' %}">Complaint Details</a>
+                    <a href="{% url 'record_repair' %}">Record Repair</a>
+                    {% endif %}
                 </div>
             </li>
+            {% if is_li_group %}
             <li>
                 <form action="{% url 'logout' %}" method="post">
                     {% csrf_token %}
                     <button type="submit">Log Out</button>
                 </form>
             </li>
+            {% endif %}
+            {% if not is_li_group %}
+            <li>
+                <form action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Log In</button>
+                </form>
+            </li>
+            {% endif %}
         </ul>
     </nav>
     {% block content %}

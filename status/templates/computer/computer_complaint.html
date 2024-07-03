@@ -1,0 +1,52 @@
+{% extends 'computer/base.html' %}
+
+{% block title %}Complaint Report{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1 align="center">Complaint Report for {{ computer.c_label }}</h1>
+        
+        {% if no_complaints %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Complaint Details</th>
+                    <th>Complaint Date</th>
+                    <th>Repair Reason</th>
+                    <th>Repair Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                    <td colspan="4">No repair details available</td>
+                    </tr>
+            </tbody>
+        </table>
+        {% else %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Complaint Details</th>
+                        <th>Complaint Date</th>
+                        <th>Repair Reason</th>
+                        <th>Repair Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for complaint in complaints %}
+                        <tr>
+                            <td>{{ complaint.complaint_details }}</td>
+                            <td>{{ complaint.complaint_date }}</td>
+                            {% if complaint.repair %}
+                                <td>{{ complaint.repair.reason }}</td>
+                                <td>{{ complaint.repair.repair_date }}</td>
+                            {% else %}
+                                <td colspan="2">No repair details available</td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+{% endblock %}

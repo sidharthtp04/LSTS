@@ -7,14 +7,48 @@ from .models import computers
 from .forms import *
 from django.contrib import messages
 from django.utils import timezone
-
+from django.db.models import Q
+from .decorators import group_required
 # Create your views here.
 
 
 @login_required()
+@group_required('li')
+def home_report(request):
+    cpu_filter = request.GET.get('cpu')
+    status_filter = request.GET.get('status')
+    lab_filter = request.GET.get('lab')
+    mb_filter = request.GET.get('mb')
+
+    computers_queryset = computers.objects.all()
+
+    if cpu_filter:
+        computers_queryset = computers_queryset.filter(cpu__cpu_id=cpu_filter)
+    if status_filter:
+        computers_queryset = computers_queryset.filter(status=status_filter)
+    if lab_filter:
+        computers_queryset = computers_queryset.filter(lab__lab_id=lab_filter)
+    if mb_filter:
+        computers_queryset = computers_queryset.filter(mb__mb_id=mb_filter)
+
+    context = {
+        'details': computers_queryset,
+        'cpu_types': cpu_types.objects.all(),
+        'lab_types': lab.objects.all(),  # Corrected the context key to 'lab_types'
+        'mb_types': motherboard_type.objects.all(),  # Corrected the context key to 'mb_types'
+        'statuses':  computers.objects.values_list('status', flat=True).distinct(),
+    }
+    
+    return render(request, 'computer/report.html', context)
+
+
+@login_required()
+@group_required('li')
 def home(request):
-    return render(request,'computer/base.html')
+    return render(request,'computer/home.html')
+
 @login_required
+@group_required('li')
 def computer(request):
     cs={
         'lab':lab.objects.all(),
@@ -57,17 +91,50 @@ def computer(request):
         comp.save()
         return redirect("display")
     return render(request,'computer/front.html',cs)
+
 @login_required
+@group_required('li')
 def display(request):
+
+    filtered_computers = computers.objects.exclude(status='TRASHED')
     details={
-        'details':computers.objects.all()
+        'details':filtered_computers
     }
     return render(request,'computer/display.html',details)
 
+
 @login_required
+@group_required('li')
+def trashed_computers(request):
+    trashed_computers = computers.objects.filter(status='TRASHED')
+    details = {
+        'details': trashed_computers
+    }
+    return render(request, 'computer/trashed_computers.html', details)
+
+@login_required
+@group_required('li')
+def computer_complaint_report(request, computer_id):
+    computer = get_object_or_404(computers, c_id=computer_id)
+    complaints = Complaint.objects.filter(computer=computer)
+    
+    context = {
+        'computer': computer,
+        'complaints': complaints
+    }
+    
+    if not complaints:
+        context['no_complaints'] = True
+    
+    return render(request, 'computer/computer_complaint.html', context)
+
+@login_required
+@group_required('li')
 def base(request):
     return render(request,'computer/base.html')
 
+@login_required
+@group_required('li')
 def complaint(request, pk):
     computer = get_object_or_404(computers, pk=pk)
     
@@ -96,7 +163,9 @@ def complaint(request, pk):
     return render(request, 'computer/complaint.html', {'form': form, 'computer': computer})
 
 
+
 @login_required
+@group_required('li')
 def submit(request):
     if request.method=="POST":
         status_list=request.POST.getlist('status')
@@ -107,6 +176,7 @@ def submit(request):
 
     
 @login_required
+@group_required('li')
 def edit_computer(request, pk):
     computer = get_object_or_404(computers, pk=pk)
     
@@ -120,7 +190,7 @@ def edit_computer(request, pk):
     return render(request, 'computer/edit_computer.html', {'form': form})
     
 
-@login_required
+
 def report(request):
     cpu_filter = request.GET.get('cpu')
     status_filter = request.GET.get('status')
@@ -147,19 +217,39 @@ def report(request):
     }
     
     return render(request, 'computer/report.html', context)
+
+
 @login_required
+@group_required('li')
 def lab_selection(request):
     return render(request, 'computer/lab_selection.html')
+
+
 @login_required
+@group_required('li')
 def complaint_report(request):
-    details={
-        'details':computers.objects.all()   
+    # Get the filter value from the GET parameters
+    status_filter = request.GET.get('status', 'all')
+    
+    filtered_computers = computers.objects.exclude(status='TRASHED')
+
+    details = {
+        'details': filtered_computers,
+        'status_filter': status_filter  # Pass the current filter value to the template
     }
-    return render(request,'computer/complaint_report.html',details)
-
-
+    
+    return render(request, 'computer/complaint_report.html', details)
 
 @login_required
+@group_required('li')
+def change_status_to_trashed(request, computer_id):
+    computer = get_object_or_404(computers, pk=computer_id)
+    computer.status = 'TRASHED'
+    computer.save()
+    return redirect('display')
+
+@login_required
+@group_required('li')
 def repair_detail(request, pk):
     computer = get_object_or_404(computers, pk=pk)
     # Filter complaints with pending repair details and get the latest one
@@ -187,7 +277,9 @@ def repair_detail(request, pk):
     }
 
     return render(request, 'computer/repair_detail.html', context)
+    
 @login_required
+@group_required('li')
 def report_generation(request):
     complaints = Complaint.objects.select_related('computer').all()
     repairs = Repair.objects.select_related('complaint').all()
@@ -228,7 +320,9 @@ def report_generation(request):
         'repair_form': repair_form,
     }
     return render(request, 'computer/report_generation.html', context)
+
 @login_required
+@group_required('li')
 def delete_repair(request, pk):
     repair = get_object_or_404(Repair, pk=pk)
     complaint = get_object_or_404(Complaint, computer=repair.computer)
@@ -242,7 +336,9 @@ def delete_repair(request, pk):
         computer.save()
 
     return redirect('report_generation')
+
 @login_required
+@group_required('li')
 def delete_complaint(request, pk):
     complaint = get_object_or_404(Complaint, pk=pk)
     computer = complaint.computer
@@ -256,7 +352,8 @@ def delete_complaint(request, pk):
 
     return redirect('report_generation')
 
-@login_required
+@login_required()
+@group_required('li')
 def new_page(request):
     # Process form submission and filter queryset based on form data
     lab_id = request.GET.get('lab')
@@ -275,3 +372,22 @@ def new_page(request):
     }
 
     return render(request, 'computer/new.html', context)
+
+@login_required
+@group_required('li')
+def record_repair(request):
+    form = ComplaintFilterForm(request.GET or None)
+    complaints = Complaint.objects.all()
+
+    if form.is_valid():
+        if form.cleaned_data['c_label']:
+            complaints = complaints.filter(computer__c_label=form.cleaned_data['c_label'])
+        if form.cleaned_data['lab_name']:
+            complaints = complaints.filter(computer__lab=form.cleaned_data['lab_name'])
+
+    context = {
+        'form': form,
+        'complaints': complaints,
+    }
+
+    return render(request, 'computer/record_repair.html', context)

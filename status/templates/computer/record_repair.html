@@ -1,0 +1,42 @@
+{% extends 'computer/base.html' %}
+
+{% block title %}
+    Record Repair
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Record Repair</h2>
+    <form method="get" action="{% url 'record_repair' %}">
+        {{ form.as_p }}
+        <button type="submit">Filter</button>
+    </form>
+
+    {% if complaints %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Computer Label</th>
+                    <th>Lab Name</th>
+                    <th>Complaint Date</th>
+                    <th>Repair Reason</th>
+                    <th>Repair Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for complaint in complaints %}
+                    <tr>
+                        <td>{{ complaint.computer.c_label }}</td>
+                        <td>{{ complaint.computer.lab.lab_name }}</td>
+                        <td>{{ complaint.complaint_date }}</td>
+                        <td>{{ complaint.repair.reason }}</td>
+                        <td>{{ complaint.repair.repair_date }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No complaints found.</p>
+    {% endif %}
+</div>
+{% endblock %}

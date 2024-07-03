@@ -73,33 +73,7 @@
         }
     </style>
 </head>
-<body>
-    <div class="filters-container">
-        <h3>Filters</h3>
-        <form action="{% url 'new_page' %}" method="GET">
-    {% csrf_token %}
-    <!-- Your existing filters for lab and status -->
-    <label for="lab">Filter by Lab:</label>
-    <select name="lab" id="lab">
-        <option value="">All Labs</option>
-        {% for lab in lab_types %}
-            <option value="{{ lab.lab_id }}">{{ lab.lab_name }}</option>
-        {% endfor %}
-    </select>
-
-    <label for="status">Filter by Status:</label>
-    <select name="status" id="status">
-        <option value="">All Statuses</option>
-        {% for status in statuses %}
-            <option value="{{ status }}">{{ status }}</option>
-        {% endfor %}
-    </select>
-
-    <input type="submit" value="Apply Filters">
-</form>
-    </div>
-
-    <div class="login-container">
+<div class="login-container">
         <h2>Login</h2>
         <form action="{% url 'login' %}" method="post" class="login-form">
             {% csrf_token %}
@@ -111,6 +85,6 @@
 
             <button type="submit">Login</button>
         </form>
-    </div>
+</div>
 </body>
 </html>

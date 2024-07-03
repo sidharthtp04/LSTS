@@ -77,21 +77,35 @@ class lab_timetable(models.Model):
     year = models.IntegerField()
     
 class computers(models.Model):
-    c_id=models.AutoField(primary_key=True)
-    c_label=models.CharField(max_length=20)
-    lab = models.ForeignKey(lab,on_delete=models.CASCADE)
-    cpu=models.ForeignKey(cpu_types,on_delete=models.CASCADE)
-    ram=models.ForeignKey(ram_type,on_delete=models.CASCADE)
-    storage=models.ForeignKey(storage_type,on_delete=models.CASCADE)
-    dop=models.DateField()
-    status=models.CharField(max_length=20)
-    invoice_no=models.IntegerField()
-    os_type=models.CharField(max_length=20)
-    mb=models.ForeignKey(motherboard_type,on_delete=models.CASCADE)
-    smps=models.ForeignKey(smps,on_delete=models.CASCADE)
-    keyboard=models.ForeignKey(keyboard,on_delete=models.CASCADE)
-    mouse=models.ForeignKey(mouse,on_delete=models.CASCADE)
-    monitor=models.ForeignKey(monitor,on_delete=models.CASCADE)
+    WORKING = 'WORKING'
+    NOT_WORKING = 'NOT WORKING'
+    TRASHED = 'TRASHED'
+    
+    STATUS_CHOICES = [
+        (WORKING, 'Working'),
+        (NOT_WORKING, 'Not Working'),
+        (TRASHED, 'Trashed'),
+    ]
+    
+    c_id = models.AutoField(primary_key=True)
+    c_label = models.CharField(max_length=20)
+    lab = models.ForeignKey(lab, on_delete=models.CASCADE)
+    cpu = models.ForeignKey(cpu_types, on_delete=models.CASCADE)
+    ram = models.ForeignKey(ram_type, on_delete=models.CASCADE)
+    storage = models.ForeignKey(storage_type, on_delete=models.CASCADE)
+    dop = models.DateField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=WORKING)
+    invoice_no = models.IntegerField()
+    os_type = models.CharField(max_length=20)
+    mb = models.ForeignKey(motherboard_type, on_delete=models.CASCADE)
+    smps = models.ForeignKey(smps, on_delete=models.CASCADE)
+    keyboard = models.ForeignKey(keyboard, on_delete=models.CASCADE)
+    mouse = models.ForeignKey(mouse, on_delete=models.CASCADE)
+    monitor = models.ForeignKey(monitor, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.c_label}"
+    
     
 class Complaint(models.Model):
     id = models.AutoField(primary_key=True)

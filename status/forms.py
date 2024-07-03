@@ -21,3 +21,6 @@ class RepairForm(forms.ModelForm):
         widgets = {
             'repair_date': forms.DateInput(attrs={'type': 'date'}),
         }
+class ComplaintFilterForm(forms.Form):
+    c_label = forms.ModelChoiceField(queryset=computers.objects.all(), required=False, label='Computer Label')
+    lab_name = forms.ModelChoiceField(queryset=lab.objects.all(), required=False, label='Lab Name')
