@@ -2,34 +2,43 @@
 
 {% extends 'computer/base.html' %}
 
-{% block title %}Computer Repair Report{% endblock %}
+{% block title %}Complaint Details{% endblock %}
 
 {% block content %}
-    <h1>Computer Repair Report</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Computer Label</th>
-                <th>Complaint Reason</th>
-                <th>Complaint Date</th>
-                <th>Repair Reason</th>
-                <th>Repair Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for data in combined_data %}
+<div class="container">
+    <h2>Complaint Details</h2>
+    <form method="get" action="{% url 'report_generation' %}">
+        {{ form.as_p }}
+        <button type="submit">Filter</button>
+    </form>
+
+    {% if complaints %}
+        <table>
+            <thead>
                 <tr>
-                    <td>{{ data.computer_label }}</td>
-                    <td>{{ data.complaint_details }}</td>
-                    <td>{{ data.complaint_date }}</td>
-                    <td>{{ data.repair_reason }}</td>
-                    <td>{{ data.repair_date }}</td>
+                    <th>Computer Label</th>
+                    <th>Lab Name</th>
+                    <th>Complaint Reason</th>
+                    <th>Complaint Date</th>
+                    <th>Repair Reason</th>
+                    <th>Repair Date</th>
                 </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="5">No computer repair details available.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for complaint in complaints %}
+                    <tr>
+                        <td>{{ complaint.computer.c_label }}</td>
+                        <td>{{ complaint.computer.lab.lab_name }}</td>
+                        <td>{{ complaint.complaint_details }}</td>
+                        <td>{{ complaint.complaint_date }}</td>
+                        <td>{{ complaint.repair.reason }}</td>
+                        <td>{{ complaint.repair.repair_date }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No complaints found.</p>
+    {% endif %}
+</div>
 {% endblock %}

@@ -23,7 +23,7 @@
                         {{ computer.status }}
                     </td>
                     <td><a href="{% url 'comp' pk=computer.c_id %}">Complaint</a></td>
-                    <td><a href="{% url 'repair_detail' pk=computer.c_id %}">Repaired</a></td>
+                    <td><a href="{% url 'repair_detail' pk=computer.c_id %}">Record Repair</a></td>
                 </tr>
             {% endfor %}
         </tbody>

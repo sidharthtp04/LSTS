@@ -98,7 +98,7 @@
             <div class="form-group">
                 <label for="ram">RAM:</label>
                 <select id="ram" name="ram" required>
-                    <option value="none">None</option>
+                    
                     {% for i in ram %}
                         <option value="{{i.ram_id}}">{{i.ram_size}} {{i.make}} {{i.speed}} {{i.series}}</option>
                     {% endfor %}

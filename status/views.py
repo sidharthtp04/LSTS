@@ -286,7 +286,14 @@ def report_generation(request):
 
     # Create a dictionary mapping complaint IDs to repairs
     repairs_dict = {repair.complaint_id: repair for repair in repairs}
-
+    form = ComplaintFilterForm(request.GET or None)
+    complaints = Complaint.objects.all()
+    repairs=Repair.objects.all()
+    if form.is_valid():
+        if form.cleaned_data['c_label']:
+            complaints = complaints.filter(computer__c_label=form.cleaned_data['c_label'])
+        if form.cleaned_data['lab_name']:
+            complaints = complaints.filter(computer__lab=form.cleaned_data['lab_name'])
     # Create a list of dictionaries that combine complaints and repairs
     combined_data = []
     for complaint in complaints:
@@ -318,76 +325,12 @@ def report_generation(request):
         'combined_data': combined_data,
         'complaint_form': complaint_form,
         'repair_form': repair_form,
+        'form': form,
+        'complaints': complaints,
+        'repairs':repairs,
     }
     return render(request, 'computer/report_generation.html', context)
 
-@login_required
-@group_required('li')
-def delete_repair(request, pk):
-    repair = get_object_or_404(Repair, pk=pk)
-    complaint = get_object_or_404(Complaint, computer=repair.computer)
-    computer = repair.computer
 
-    repair.delete()
 
-    remaining_repairs = Repair.objects.filter(computer=computer).exists()
-    if not remaining_repairs:
-        computer.status = 'not working'
-        computer.save()
 
-    return redirect('report_generation')
-
-@login_required
-@group_required('li')
-def delete_complaint(request, pk):
-    complaint = get_object_or_404(Complaint, pk=pk)
-    computer = complaint.computer
-
-    complaint.delete()
-
-    remaining_complaints = Complaint.objects.filter(computer=computer).exists()
-    if not remaining_complaints:
-        computer.status = 'working'
-        computer.save()
-
-    return redirect('report_generation')
-
-@login_required()
-@group_required('li')
-def new_page(request):
-    # Process form submission and filter queryset based on form data
-    lab_id = request.GET.get('lab')
-    status = request.GET.get('status')
-
-    computers_list = computers.objects.all()  # Use the correct model name 'Computer'
-
-    if lab_id:
-        computers_list = computers_list.filter(lab_id=lab_id)
-
-    if status:
-        computers_list = computers_list.filter(status=status)
-
-    context = {
-        'computers_list': computers_list
-    }
-
-    return render(request, 'computer/new.html', context)
-
-@login_required
-@group_required('li')
-def record_repair(request):
-    form = ComplaintFilterForm(request.GET or None)
-    complaints = Complaint.objects.all()
-
-    if form.is_valid():
-        if form.cleaned_data['c_label']:
-            complaints = complaints.filter(computer__c_label=form.cleaned_data['c_label'])
-        if form.cleaned_data['lab_name']:
-            complaints = complaints.filter(computer__lab=form.cleaned_data['lab_name'])
-
-    context = {
-        'form': form,
-        'complaints': complaints,
-    }
-
-    return render(request, 'computer/record_repair.html', context)
