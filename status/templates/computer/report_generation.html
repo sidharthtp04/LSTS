@@ -1,56 +1,33 @@
+<!-- report_generation.html -->
+
 {% extends 'computer/base.html' %}
 
-{% block title %}
-    Computer Repair Report
-{% endblock %}
+{% block title %}Computer Repair Report{% endblock %}
 
 {% block content %}
+    <h1>Computer Repair Report</h1>
     <table>
         <thead>
             <tr>
-                <th>Repair ID</th>
                 <th>Computer Label</th>
-                <th>Complaint Details</th>
+                <th>Complaint Reason</th>
                 <th>Complaint Date</th>
                 <th>Repair Reason</th>
                 <th>Repair Date</th>
-                <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            {% for result in results %}
+            {% for data in combined_data %}
                 <tr>
-                    <td>{{ result.repair_id }}</td>
-                    <td>{{ result.computer_label }}</td>
-                    <td>{{ result.complaint_details }}</td>
-                    <td>{{ result.complaint_date }}</td>
-                    <td>
-                        {% if result.repair_reason %}
-                            {{ result.repair_reason }}
-                        {% else %}
-                            Pending
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if result.repair_date %}
-                            {{ result.repair_date }}
-                        {% else %}
-                            Pending
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if result.repair_id %}
-                            <form action="{% url 'delete_repair' result.repair_id %}" method="post">
-                                {% csrf_token %}
-                                <button type="submit">Delete Repair</button>
-                            </form>
-                        {% else %}
-                            <form action="{% url 'delete_complaint' result.complaint_id %}" method="post">
-                                {% csrf_token %}
-                                <button type="submit">Delete Complaint</button>
-                            </form>
-                        {% endif %}
-                    </td>
+                    <td>{{ data.computer_label }}</td>
+                    <td>{{ data.complaint_details }}</td>
+                    <td>{{ data.complaint_date }}</td>
+                    <td>{{ data.repair_reason }}</td>
+                    <td>{{ data.repair_date }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5">No computer repair details available.</td>
                 </tr>
             {% endfor %}
         </tbody>

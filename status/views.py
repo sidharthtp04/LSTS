@@ -162,13 +162,14 @@ def complaint_report(request):
 @login_required
 def repair_detail(request, pk):
     computer = get_object_or_404(computers, pk=pk)
-    complaints = Complaint.objects.filter(computer=computer)
+    # Filter complaints with pending repair details and get the latest one
+    latest_complaint = Complaint.objects.filter(computer=computer, repair__isnull=True).order_by('-complaint_date').first()
 
     if request.method == 'POST':
         form = RepairForm(request.POST)
         if form.is_valid():
             repair = form.save(commit=False)
-            repair.computer = computer  # Link the repair to the correct computer
+            repair.complaint = latest_complaint  # Link the repair to the latest pending complaint
             repair.save()
 
             # Update computer status and any other necessary logic
@@ -177,50 +178,56 @@ def repair_detail(request, pk):
 
             return redirect('report_generation')  # Redirect after successful form submission
     else:
-        form = RepairForm()
+        form = RepairForm(initial={'complaint': latest_complaint})
 
     context = {
         'computer': computer,
-        'complaints': complaints,
+        'latest_complaint': latest_complaint,
         'form': form
     }
 
     return render(request, 'computer/repair_detail.html', context)
-
 @login_required
 def report_generation(request):
     complaints = Complaint.objects.select_related('computer').all()
-    results = []
+    repairs = Repair.objects.select_related('complaint').all()
 
+    # Create a dictionary mapping complaint IDs to repairs
+    repairs_dict = {repair.complaint_id: repair for repair in repairs}
+
+    # Create a list of dictionaries that combine complaints and repairs
+    combined_data = []
     for complaint in complaints:
-        repair = Repair.objects.filter(computer=complaint.computer).first()
-
-        if repair:
-            reason = repair.reason
-            repair_date = repair.repair_date
-            status = 'Repaired'
-        else:
-            reason = 'Pending'
-            repair_date = None
-            status = 'Pending'
-
-        results.append({
-            'repair_id': repair.repair_id if repair else None,
-            'complaint_id': complaint.id,  # Ensure complaint_id is available
+        data = {
             'computer_label': complaint.computer.c_label,
             'complaint_details': complaint.complaint_details,
             'complaint_date': complaint.complaint_date,
-            'repair_reason': reason,
-            'repair_date': repair_date,
-            'status': status,
-        })
+            'repair_reason': repairs_dict[complaint.id].reason if complaint.id in repairs_dict else 'Pending',
+            'repair_date': repairs_dict[complaint.id].repair_date if complaint.id in repairs_dict else 'Pending'
+        }
+        combined_data.append(data)
+
+    if request.method == 'POST':
+        if 'complaint_submit' in request.POST:
+            complaint_form = ComplaintForm(request.POST)
+            if complaint_form.is_valid():
+                complaint_form.save()
+                return redirect('report_generation')
+        elif 'repair_submit' in request.POST:
+            repair_form = RepairForm(request.POST)
+            if repair_form.is_valid():
+                repair_form.save()
+                return redirect('report_generation')
+    else:
+        complaint_form = ComplaintForm()
+        repair_form = RepairForm()
 
     context = {
-        'results': results
+        'combined_data': combined_data,
+        'complaint_form': complaint_form,
+        'repair_form': repair_form,
     }
-
     return render(request, 'computer/report_generation.html', context)
-
 @login_required
 def delete_repair(request, pk):
     repair = get_object_or_404(Repair, pk=pk)
@@ -235,7 +242,6 @@ def delete_repair(request, pk):
         computer.save()
 
     return redirect('report_generation')
-
 @login_required
 def delete_complaint(request, pk):
     complaint = get_object_or_404(Complaint, pk=pk)
@@ -249,3 +255,23 @@ def delete_complaint(request, pk):
         computer.save()
 
     return redirect('report_generation')
+
+@login_required
+def new_page(request):
+    # Process form submission and filter queryset based on form data
+    lab_id = request.GET.get('lab')
+    status = request.GET.get('status')
+
+    computers_list = computers.objects.all()  # Use the correct model name 'Computer'
+
+    if lab_id:
+        computers_list = computers_list.filter(lab_id=lab_id)
+
+    if status:
+        computers_list = computers_list.filter(status=status)
+
+    context = {
+        'computers_list': computers_list
+    }
+
+    return render(request, 'computer/new.html', context)

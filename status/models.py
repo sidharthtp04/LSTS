@@ -93,24 +93,16 @@ class computers(models.Model):
     mouse=models.ForeignKey(mouse,on_delete=models.CASCADE)
     monitor=models.ForeignKey(monitor,on_delete=models.CASCADE)
     
-def get_default_computer():
-    return computers.objects.first().pk
-
 class Complaint(models.Model):
-    computer = models.ForeignKey(computers, on_delete=models.CASCADE, default=get_default_computer)
-    complaint_details = models.CharField(max_length=50)
-    complaint_date = models.DateField()
-
+    id = models.AutoField(primary_key=True)
+    computer = models.ForeignKey(computers, on_delete=models.CASCADE)
+    complaint_details = models.TextField()
+    complaint_date = models.DateField()  # No auto_now_add=True
     def __str__(self):
-        return f"Complaint for {self.computer.c_label} on {self.complaint_date}"
-
+        return f"{self.complaint_details}"
 class Repair(models.Model):
     repair_id = models.AutoField(primary_key=True)
-    computer = models.ForeignKey(computers, on_delete=models.CASCADE)
-    reason = models.TextField(default='Not specified')  # Specify a default value
- 
- 
-    repair_date = models.DateField()
-
-    def __str__(self):
-        return f"Repair for {self.computer.c_label} on {self.repair_date}"
+    complaint = models.OneToOneField(Complaint, on_delete=models.CASCADE)
+    reason = models.TextField()
+    repair_date = models.DateField()  # No auto_now=True
+    
