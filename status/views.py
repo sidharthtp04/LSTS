@@ -190,7 +190,7 @@ def edit_computer(request, pk):
     return render(request, 'computer/edit_computer.html', {'form': form})
     
 
-
+@login_required
 def report(request):
     cpu_filter = request.GET.get('cpu')
     status_filter = request.GET.get('status')
@@ -333,4 +333,29 @@ def report_generation(request):
 
 
 
+def first_page(request):
+    cpu_filter = request.GET.get('cpu')
+    status_filter = request.GET.get('status')
+    lab_filter = request.GET.get('lab')
+    mb_filter = request.GET.get('mb')
 
+    computers_queryset = computers.objects.all()
+
+    if cpu_filter:
+        computers_queryset = computers_queryset.filter(cpu__make=cpu_filter)
+    if status_filter:
+        computers_queryset = computers_queryset.filter(status=status_filter)
+    if lab_filter:
+        computers_queryset = computers_queryset.filter(lab__lab_id=lab_filter)
+    if mb_filter:
+        computers_queryset = computers_queryset.filter(mb__mb_socket_type=mb_filter)
+
+    context = {
+        'details': computers_queryset,
+        'cpu_types': cpu_types.objects.all(),
+        'lab_types': lab.objects.all(),
+        'mb_types': motherboard_type.objects.all(),
+        'statuses':  computers.objects.values_list('status', flat=True).distinct(),
+    }
+
+    return render(request, 'computer/firstpage.html', context)

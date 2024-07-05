@@ -2,32 +2,15 @@
 
 {% block title %}Computer Details{% endblock %}
 
-{%block style%}
+{% block nav %}
+<li>
+    <a href="{% url 'trashed_computers' %}">Trash</a>
+</li>
 
-.delete-button {
-    position: fixed;
-    bottom: 20px; /* Adjust the distance from the bottom */
-    right: 20px; /* Adjust the distance from the right */
-    z-index: 9999;
-    padding: 14px 28px;
-    background-color: white; /* Red color for delete button */
-    color: rgb(0, 0, 0);
-    border: 2px solid #f44336;;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-left: 10px;
-  }
-  
-  .delete-button:hover {
-    background-color: #ff0000; /* Darker red color on hover */
-    border-radius: 5px;
-  }
-
-{%endblock%}
+{% endblock %}
 
 {% block content %}
+
     <table>
         <thead>
             <tr>
@@ -71,5 +54,5 @@
         </tbody>
     </table>
 
-    <a href="{% url 'trashed_computers' %}"><input id="d1" class="delete-button" type="button" value="Trash" /></a>
+    
 {% endblock %}

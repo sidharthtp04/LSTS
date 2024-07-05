@@ -60,7 +60,7 @@ class monitor(models.Model):
     def __str__(self):
         return f"{self.make} {self.size} {self.resolution}"
 class lab(models.Model):
-    lab_id = models.AutoField(primary_key=True)
+    lab_id = models.IntegerField(primary_key=True)
     lab_name = models.CharField(max_length = 15)
     capacity = models.IntegerField()
     def __str__(self):
