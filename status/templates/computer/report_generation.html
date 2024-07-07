@@ -1,10 +1,10 @@
+
 {% extends 'computer/base.html' %}
 
 {% block title %}Complaint Details{% endblock %}
 
 {% block content %}
     <style>
-   <style>
         .filter-form {
             display: flex;
             flex-wrap: wrap;
@@ -13,6 +13,7 @@
             background-color: #f9f9f9;
             padding: 20px;
             border-radius: 8px;
+            width: 1000px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
@@ -25,13 +26,21 @@
             font-weight: bold;
             margin-right: 10px;
         }
-
+        
         .filter-form select {
             padding: 8px;
             border: 1px solid #ccc;
             border-radius: 4px;
             width: 100%;
             font-size: 14px;
+        }
+
+        .filter-form .submit {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            width: 100%;
         }
 
         .filter-form input[type="submit"] {
@@ -42,17 +51,13 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 14px;
-            width: 100%;
-            margin-top: 10px;
+            width: 200px;
+            margin-right:400px;
         }
 
         .filter-form input[type="submit"]:hover {
             background-color: #0056b3;
         }
-
-        
-
-        
 
         .status-working {
             color: green;
@@ -64,7 +69,7 @@
             color: red;
             font-weight: bold;
         }
-
+        
         @media (max-width: 768px) {
             .filter-form {
                 flex-direction: column;
@@ -72,6 +77,10 @@
 
             .filter-form > div {
                 margin-bottom: 10px;
+            }
+
+            .filter-form .submit {
+                margin-top: 10px;
             }
 
             .filter-form input[type="submit"] {
@@ -84,7 +93,7 @@
         <h1>Complaint Details</h1>
         <form method="get" action="{% url 'report_generation' %}" class="filter-form">
             {{ form.as_p }}
-            <div>
+            <div class="submit">
                 <input type="submit" value="Filter">
             </div>
         </form>
@@ -119,3 +128,6 @@
         {% endif %}
     </div>
 {% endblock %}
+
+
+
