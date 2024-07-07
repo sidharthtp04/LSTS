@@ -17,7 +17,7 @@ class ComplaintForm(forms.ModelForm):
 class RepairForm(forms.ModelForm):
     class Meta:
         model = Repair
-        fields = ['complaint', 'reason', 'repair_date']
+        fields = [ 'reason', 'repair_date']
         widgets = {
             'repair_date': forms.DateInput(attrs={'type': 'date'}),
         }

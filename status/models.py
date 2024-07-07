@@ -23,8 +23,8 @@ class motherboard_type(models.Model):
     
 class ram_type(models.Model):
     ram_id = models.AutoField(primary_key=True)
-    ram_size = models.CharField(max_length=15)
-    make = models.CharField(max_length=15)
+    ram_size = models.CharField(max_length=25)
+    make = models.CharField(max_length=25)
     speed = models.IntegerField()
     series = models.CharField(max_length=20)
     def __str__(self):
@@ -77,13 +77,13 @@ class lab_timetable(models.Model):
     year = models.IntegerField()
     
 class computers(models.Model):
-    WORKING = 'WORKING'
-    NOT_WORKING = 'NOT WORKING'
+    working = 'working'
+    not_working = 'not working'
     TRASHED = 'TRASHED'
     
     STATUS_CHOICES = [
-        (WORKING, 'Working'),
-        (NOT_WORKING, 'Not Working'),
+        (working, 'working'),
+        (not_working, 'not working'),
         (TRASHED, 'Trashed'),
     ]
     
@@ -94,7 +94,7 @@ class computers(models.Model):
     ram = models.ForeignKey(ram_type, on_delete=models.CASCADE)
     storage = models.ForeignKey(storage_type, on_delete=models.CASCADE)
     dop = models.DateField()
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=WORKING)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=working)
     invoice_no = models.IntegerField()
     os_type = models.CharField(max_length=20)
     mb = models.ForeignKey(motherboard_type, on_delete=models.CASCADE)

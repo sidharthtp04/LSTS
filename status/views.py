@@ -196,6 +196,8 @@ def report(request):
     status_filter = request.GET.get('status')
     lab_filter = request.GET.get('lab')
     mb_filter = request.GET.get('mb')
+    storage_filter = request.GET.get('storage')
+    ram_filter = request.GET.get('ram')
 
     computers_queryset = computers.objects.all()
 
@@ -207,17 +209,22 @@ def report(request):
         computers_queryset = computers_queryset.filter(lab__lab_id=lab_filter)
     if mb_filter:
         computers_queryset = computers_queryset.filter(mb__mb_id=mb_filter)
+    if storage_filter:
+        computers_queryset = computers_queryset.filter(storage__storage_id=storage_filter)
+    if ram_filter:
+        computers_queryset = computers_queryset.filter(ram__ram_id=ram_filter)
 
     context = {
         'details': computers_queryset,
         'cpu_types': cpu_types.objects.all(),
-        'lab_types': lab.objects.all(),  # Corrected the context key to 'lab_types'
-        'mb_types': motherboard_type.objects.all(),  # Corrected the context key to 'mb_types'
-        'statuses':  computers.objects.values_list('status', flat=True).distinct(),
+        'lab_types': lab.objects.all(),
+        'mb_types': motherboard_type.objects.all(),
+        'storage_types': storage_type.objects.all(),
+        'ram_types': ram_type.objects.all(),
+        'statuses': computers.objects.values_list('status', flat=True).distinct(),
     }
-    
-    return render(request, 'computer/report.html', context)
 
+    return render(request, 'computer/report.html', context)
 
 @login_required
 @group_required('li')
@@ -287,18 +294,18 @@ def report_generation(request):
     # Create a dictionary mapping complaint IDs to repairs
     repairs_dict = {repair.complaint_id: repair for repair in repairs}
     form = ComplaintFilterForm(request.GET or None)
-    complaints = Complaint.objects.all()
-    repairs=Repair.objects.all()
     if form.is_valid():
         if form.cleaned_data['c_label']:
             complaints = complaints.filter(computer__c_label=form.cleaned_data['c_label'])
         if form.cleaned_data['lab_name']:
-            complaints = complaints.filter(computer__lab=form.cleaned_data['lab_name'])
+            complaints = complaints.filter(computer__lab__lab_name=form.cleaned_data['lab_name'])
+
     # Create a list of dictionaries that combine complaints and repairs
     combined_data = []
     for complaint in complaints:
         data = {
             'computer_label': complaint.computer.c_label,
+            'lab_name': complaint.computer.lab.lab_name,
             'complaint_details': complaint.complaint_details,
             'complaint_date': complaint.complaint_date,
             'repair_reason': repairs_dict[complaint.id].reason if complaint.id in repairs_dict else 'Pending',
@@ -327,7 +334,7 @@ def report_generation(request):
         'repair_form': repair_form,
         'form': form,
         'complaints': complaints,
-        'repairs':repairs,
+        'repairs': repairs,
     }
     return render(request, 'computer/report_generation.html', context)
 
