@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -13,24 +14,29 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
-            background-color: #f2f2f2;
+            background-image: url("{% static 'image/bgimg.jpg' %}");
+            background-size: cover;
+            background-position: center;
         }
 
         .login-container {
-            background-color: #fff;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             padding: 20px;
+            width: 300px;
+            text-align: center; /* Center align content */
+        }
+
+        .login-container h2 {
+            margin-bottom: 20px;
+            color: #333;
         }
 
         .login-form {
-            max-width: 300px;
+            max-width: 100%;
             margin: 0 auto;
-        }
-
-        h2 {
-            text-align: center;
-            color: #333;
+            text-align: left; /* Left align form elements */
         }
 
         label {
@@ -40,11 +46,12 @@
         }
 
         input {
-            width: 100%;
+            width: calc(100% - 16px); /* Adjusting for padding */
             padding: 8px;
             margin-bottom: 16px;
             border: 1px solid #ccc;
             border-radius: 4px;
+            box-sizing: border-box; /* Include padding and border in width calculation */
         }
 
         button {
@@ -65,7 +72,7 @@
 <body>
     <div class="login-container">
         <h2>Login</h2>
-        <form action="{% url 'login' %}" method="post">
+        <form action="{% url 'login' %}" method="post" class="login-form">
             {% csrf_token %}
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
@@ -78,4 +85,3 @@
     </div>
 </body>
 </html>
-

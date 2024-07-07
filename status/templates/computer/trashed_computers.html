@@ -1,0 +1,73 @@
+{% extends 'computer/base.html' %}
+
+{% block title %}Computer Details{% endblock %}
+
+{%block style%}
+
+.delete-button {
+    position: fixed;
+    bottom: 20px; /* Adjust the distance from the bottom */
+    right: 20px; /* Adjust the distance from the right */
+    z-index: 9999;
+    padding: 14px 28px;
+    background-color: white; /* Red color for delete button */
+    color: rgb(0, 0, 0);
+    border: 2px solid #f44336;;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-left: 10px;
+  }
+  
+  .delete-button:hover {
+    background-color: #ff0000; /* Darker red color on hover */
+    border-radius: 5px;
+  }
+
+{%endblock%}
+
+{% block content %}
+    <table>
+        <thead>
+            <tr>
+                <th>C_Label</th>
+                <th>LAB</th>
+                <th>Date of Purchase</th>
+                <th>CPU</th>
+                <th>Motherboard</th>
+                <th>Ram</th>
+                <th>Storage</th>
+                <th>SMPS</th>
+                <th>Keyboard</th>
+                <th>Mouse</th>
+                <th>Monitor</th>
+                <th>Status</th>
+                <th>Invoice No.</th>
+                <th>OS Type</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in details %}
+                <tr>
+                    <td>{{ i.c_label }}</td>
+                    <td>{{ i.lab.lab_name }}</td>
+                    <td>{{ i.dop }}</td>
+                    <td>{{ i.cpu.make }} {{ i.cpu.series }}-{{ i.cpu.generation }} Gen CPU @ {{ i.cpu.speed }} x {{ i.cpu.core_count }}</td>
+                    <td>{{ i.mb.mb_socket_type }} {{ i.mb.max_ram_capacity }} {{ i.mb.make }} {{ i.mb.brand }}</td>
+                    <td>{{ i.ram.ram_size }} {{ i.ram.make }} {{ i.ram.speed }} {{ i.ram.series }}</td>
+                    <td>{{ i.storage.storage_size }} {{ i.storage.make }} {{ i.storage.technology }}</td>
+                    <td>{{ i.smps.make }} {{ i.smps.power }}W</td>
+                    <td>{{ i.keyboard.make }}</td>
+                    <td>{{ i.mouse.make }}</td>
+                    <td>{{ i.monitor.make }}</td>
+                    <td>{{ i.status }}</td>
+                    <td>{{ i.invoice_no }}</td>
+                    <td>{{ i.os_type }}</td>
+                    <td><a href="{% url 'complaint_report' i.c_id %}" class="edit-button">Report</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

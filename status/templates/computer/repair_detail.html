@@ -1,0 +1,24 @@
+{% extends 'computer/base.html' %}
+
+{% block title %}Repair Computer{% endblock %}
+
+{% block content %}
+    <h1>Repair Computer: {{ computer.c_label }}</h1>
+    <h2>Lab: {{ computer.lab.lab_name }}</h2>
+    <h3>Status: {{ computer.status }}</h3>
+    
+    {% if latest_complaint %}
+        <h3>Latest Complaint:</h3>
+        <ul>
+            <li>{{ latest_complaint.complaint_details }} - {{ latest_complaint.complaint_date }}</li>
+        </ul>
+        <h3>Repair Details:</h3>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Mark as Repaired</button>
+        </form>
+    {% else %}
+        <p>No new complaints pending repair.</p>
+    {% endif %}
+{% endblock %}

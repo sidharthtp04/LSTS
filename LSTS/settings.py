@@ -63,6 +63,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'status.context_processors.group_processor',
             ],
         },
     },
@@ -123,5 +124,15 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL="home"
-LOGOUT_REDIRECT_URL="login"
+LOGIN_REDIRECT_URL='home'
+LOGOUT_REDIRECT_URL='firstpage'
+
+STATIC_URL = '/static/'
+
+# Additional locations of static files
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+# In production, you may want to use a different directory for collected static files
+STATIC_ROOT = BASE_DIR / "staticfiles"

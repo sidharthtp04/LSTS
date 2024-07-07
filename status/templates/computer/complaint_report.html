@@ -1,0 +1,31 @@
+{% extends 'computer/base.html' %}
+
+{% block title %}Complaints Reporting{% endblock %}
+
+{% block content %}
+    <h1>Complaints Reporting</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Label</th>
+                <th>Lab</th>
+                <th>Status</th>
+                <th>Complaints</th>
+                <th>Repair Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for computer in details %}
+                <tr>
+                    <td>{{ computer.c_label }}</td>
+                    <td>{{ computer.lab.lab_name }}</td>
+                    <td style="color: {% if computer.status == 'working' %}green{% else %}red{% endif %};">
+                        {{ computer.status }}
+                    </td>
+                    <td><a href="{% url 'comp' pk=computer.c_id %}">Complaint</a></td>
+                    <td><a href="{% url 'repair_detail' pk=computer.c_id %}">Record Repair</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

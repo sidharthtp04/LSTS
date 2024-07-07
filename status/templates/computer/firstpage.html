@@ -1,0 +1,144 @@
+{% extends 'computer/base.html' %}
+
+{% block title %}Computer Report{% endblock %}
+
+{% block content %}
+<style>
+/* Professional Styling for Computer Report */
+
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    color: #343a40;
+}
+
+.lab-section {
+    margin: 40px 0;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.lab-section h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 1.75rem;
+    color: #fff;
+    background-color: #05022e; /* Primary background color */
+    background-image: linear-gradient(135deg, #05022e 0%, #2a2a75 100%); /* Gradient */
+    border-radius: 10px; /* Rounded corners */
+    padding: 15px 20px; /* Padding for spacing */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
+}
+
+.computer-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.computer-item {
+    position: relative;
+    width: calc(20% - 20px);
+    margin: 10px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #e9ecef;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.computer-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.computer-icon {
+    font-size: 48px;
+    display: block;
+    text-align: center;
+    color: #343a40;
+    margin-bottom: 10px;
+}
+
+.computer-details {
+    text-align: center;
+}
+
+.computer-name {
+    font-weight: bold;
+    font-size: 1.25rem;
+    margin-top: 10px;
+    color: #495057;
+}
+
+.status {
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    margin-top: 10px;
+}
+
+.status.working {
+    color: #ffffff;
+    background-color: #28a745;
+}
+
+.status.notworking {
+    color: #ffffff;
+    background-color: #dc3545;
+}
+
+.details {
+    margin-top: 15px;
+    text-align: left;
+    display: none;
+}
+
+.details.visible {
+    display: block;
+}
+
+.details div {
+    margin-bottom: 5px;
+    font-size: 0.875rem;
+    color: #495057;
+}
+</style>
+
+{% for lab in lab_types %}
+    <div class="lab-section">
+        <h2>{{ lab.lab_name }}</h2>
+        <div class="computer-list">
+            {% for computer in details %}
+                {% if computer.lab.lab_id == lab.lab_id %}
+                    <div class="computer-item {% if computer.status|lower == 'working' %}working{% elif computer.status|lower == 'not working' %}notworking{% endif %}" onclick="toggleDetails(this)">
+                        <span class="computer-icon {% if computer.status|lower == 'working' %}working{% elif computer.status|lower == 'not working' %}notworking{% endif %}">🖥️</span>
+                        <div class="computer-details">
+                            <div class="computer-name">{{ computer.c_label }}</div>
+                            <div class="status {% if computer.status|lower == 'working' %}working{% elif computer.status|lower == 'not working' %}notworking{% endif %}">{{ computer.status }}</div>
+                            <div class="details">
+                                <div><strong>CPU:</strong> {{ computer.cpu.make }} {{ computer.cpu.series }}-{{ computer.cpu.generation }}</div>
+                                <div><strong>Motherboard:</strong> {{ computer.mb.mb_socket_type }}, {{ computer.mb.max_ram_capacity }}GB, {{ computer.mb.make }}</div>
+                                <div><strong>OS Type:</strong> {{ computer.os_type }}</div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endfor %}
+
+<script>
+    function toggleDetails(item) {
+        const details = item.querySelector('.details');
+        details.classList.toggle('visible');
+    }
+</script>
+
+{% endblock %}

@@ -1,139 +1,171 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Computer Report</title>
+{% extends 'computer/base.html' %}
+
+{% block title %}Computer Report{% endblock %}
+
+{% block content %}
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        form {
+        .filter-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
             margin-bottom: 20px;
-            background: #fff;
+            background-color: #f9f9f9;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        label {
-            margin-right: 10px;
+
+        .filter-form > div {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-form label {
             font-weight: bold;
+            margin-right: 10px;
         }
-        select {
-            margin-right: 20px;
-            padding: 5px;
+
+        .filter-form select {
+            padding: 8px;
             border: 1px solid #ccc;
             border-radius: 4px;
+            width: 100%;
+            font-size: 14px;
         }
-        input[type="submit"] {
+
+        .filter-form input[type="submit"] {
             padding: 10px 20px;
-            background-color: #28a745;
-            color: #fff;
+            background-color: #007bff;
+            color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-        }
-        input[type="submit"]:hover {
-            background-color: #218838;
-        }
-        table {
+            font-size: 14px;
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 10px;
         }
-        th, td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: left;
+
+        .filter-form input[type="submit"]:hover {
+            background-color: #0056b3;
         }
-        th {
-            background-color: #f8f8f8;
+
+        
+
+        
+
+        .status-working {
+            color: green;
             font-weight: bold;
         }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
+
+        .status-not-working,
+        .status-trashed {
+            color: red;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .filter-form {
+                flex-direction: column;
+            }
+
+            .filter-form > div {
+                margin-bottom: 10px;
+            }
+
+            .filter-form input[type="submit"] {
+                width: auto;
+            }
         }
     </style>
-</head>
-<body>
+
     <h1>Computer Report</h1>
-    <form action="{% url 'report' %}" method="GET">
-        <label for="cpu">Filter by CPU:</label>
-        <select name="cpu" id="cpu">
-            <option value="">All CPUs</option>
-            {% for cpu in cpu_types %}
-                <option value="{{ cpu.cpu_id }}">{{ cpu.make }} {{ cpu.series }}-{{ cpu.generation }}</option>
-            {% endfor %}
-        </select>
-
-        <label for="mb">Filter by Motherboard:</label>
-        <select name="mb" id="mb">
-            <option value="">All Motherboards</option>
-            {% for mb in mb_types %}
-                <option value="{{ mb.mb_id }}">{{ mb.mb_socket_type }}, {{ mb.max_ram_capacity }}GB, {{ mb.make }}</option>
-            {% endfor %}
-        </select>
-
-        <label for="lab">Filter by Lab:</label>
-        <select name="lab" id="lab">
-            <option value="">All Labs</option>
-            {% for lab in lab_types %}
-                <option value="{{ lab.lab_id }}">{{ lab.lab_name }}</option>
-            {% endfor %}
-        </select>
-
-        <label for="status">Filter by Status:</label>
-        <select name="status" id="status">
-            <option value="">All Statuses</option>
-            {% for status in statuses %}
-                <option value="{{ status }}">{{ status }}</option>
-            {% endfor %}
-        </select>
-
-        <input type="submit" value="Apply Filters">
+    <form action="{% url 'report' %}" method="GET" class="filter-form">
+        <div>
+            <label for="cpu">CPU:</label>
+            <select name="cpu" id="cpu">
+                <option value="">All CPUs</option>
+                {% for cpu in cpu_types %}
+                    <option value="{{ cpu.cpu_id }}">{{ cpu.make }} {{ cpu.series }}-{{ cpu.generation }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="mb">Motherboard:</label>
+            <select name="mb" id="mb">
+                <option value="">All Motherboards</option>
+                {% for mb in mb_types %}
+                    <option value="{{ mb.mb_id }}">{{ mb.mb_socket_type }}, {{ mb.max_ram_capacity }}GB, {{ mb.make }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="lab">Lab:</label>
+            <select name="lab" id="lab">
+                <option value="">All Labs</option>
+                {% for lab in lab_types %}
+                    <option value="{{ lab.lab_id }}">{{ lab.lab_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="status">Status:</label>
+            <select name="status" id="status">
+                <option value="">All Statuses</option>
+                {% for status in statuses %}
+                    <option value="{{ status }}">{{ status }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="storage">Storage:</label>
+            <select name="storage" id="storage">
+                <option value="">All Storage</option>
+                {% for storage in storage_types %}
+                    <option value="{{ storage.storage_id }}">{{ storage.storage_size }} {{ storage.make }} {{ storage.technology }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="ram">RAM:</label>
+            <select name="ram" id="ram">
+                <option value="">All RAM</option>
+                {% for ram in ram_types %}
+                    <option value="{{ ram.ram_id }}">{{ ram.ram_size }} {{ ram.make }} {{ ram.speed }} {{ ram.series }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <input type="submit" value="Apply Filters">
+        </div>
     </form>
 
     <table>
         <thead>
             <tr>
                 <th>Label</th>
-                <th>Date of Purchase</th>
                 <th>Lab</th>
                 <th>CPU</th>
                 <th>Motherboard</th>
                 <th>Status</th>
-                <th>Invoice No</th>
-                <th>OS Type</th>
+                <th>Storage</th>
+                <th>RAM</th>
             </tr>
         </thead>
         <tbody>
             {% for computer in details %}
                 <tr>
                     <td>{{ computer.c_label }}</td>
-                    <td>{{ computer.dop }}</td>
                     <td>{{ computer.lab.lab_name }}</td>
                     <td>{{ computer.cpu.make }} {{ computer.cpu.series }}-{{ computer.cpu.generation }}</td>
                     <td>{{ computer.mb.mb_socket_type }}, {{ computer.mb.max_ram_capacity }}GB, {{ computer.mb.make }}</td>
-                    <td>{{ computer.status }}</td>
-                    <td>{{ computer.invoice_no }}</td>
-                    <td>{{ computer.os_type }}</td>
+                    <td class="{% if computer.status == 'working' %}status-working{% elif computer.status == 'not working' or computer.status == 'Trashed' %}status-not-working{% endif %}">
+                        {{ computer.status }}
+                    </td>
+                    <td>{{ computer.storage.storage_size }} {{ computer.storage.make }} {{ computer.storage.technology }}</td>
+                    <td>{{ computer.ram.ram_size }} {{ computer.ram.make }} {{ computer.ram.speed }} {{ computer.ram.series }}</td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
-</body>
-</html>
-
-    </table>
-</body>
-</html>
+{% endblock %}
