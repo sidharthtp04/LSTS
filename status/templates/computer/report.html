@@ -143,6 +143,7 @@
     <table>
         <thead>
             <tr>
+                <th>SI No</th>
                 <th>Label</th>
                 <th>Lab</th>
                 <th>CPU</th>
@@ -155,6 +156,7 @@
         <tbody>
             {% for computer in details %}
                 <tr>
+                    <td>{{ forloop.counter }}</td>
                     <td>{{ computer.c_label }}</td>
                     <td>{{ computer.lab.lab_name }}</td>
                     <td>{{ computer.cpu.make }} {{ computer.cpu.series }}-{{ computer.cpu.generation }}</td>

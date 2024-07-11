@@ -9,7 +9,7 @@ class ComputerForm(forms.ModelForm):
 class ComplaintForm(forms.ModelForm):
     class Meta:
         model = Complaint
-        fields = ['computer', 'complaint_details', 'complaint_date']
+        fields = [ 'complaint_details', 'complaint_date']
         widgets = {
             'complaint_date': forms.DateInput(attrs={'type': 'date'}),
         }

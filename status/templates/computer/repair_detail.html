@@ -2,23 +2,124 @@
 
 {% block title %}Repair Computer{% endblock %}
 
+{% block styles %}
+<style>
+    h1, h2, h3 {
+        color: #333;
+        margin-top: 20px;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    h2 {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    h3 {
+        font-size: 18px;
+        margin-top: 20px;
+    }
+
+    .form-container {
+        background-color: #fff;
+        padding: 20px;
+        margin: 30px auto;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        width: 90%;
+        max-width: 600px;
+        text-align: left;
+    }
+
+    .complaint-section, .repair-form {
+        margin-top: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+
+    .complaint-section ul {
+        list-style-type: disc;
+        padding-left: 20px;
+    }
+
+    .repair-form form {
+        width: 100%;
+    }
+
+    .repair-form form label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .repair-form form input[type="text"],
+    .repair-form form select,
+    .repair-form form textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+    }
+
+    .repair-form form button {
+        padding: 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        width: 100%;
+        box-sizing: border-box;
+        transition: background-color 0.3s ease;
+    }
+
+    .repair-form form button:hover {
+        background-color: #0056b3;
+    }
+
+    .no-complaint {
+        color: #d9534f;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 20px;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-    <h1>Repair Computer: {{ computer.c_label }}</h1>
-    <h2>Lab: {{ computer.lab.lab_name }}</h2>
-    <h3>Status: {{ computer.status }}</h3>
-    
+<div class="form-container">
+    <h1>Computer: {{ computer.c_label }}</h1>
+    <h2>LAB: {{ computer.lab.lab_name }}</h2>
+
     {% if latest_complaint %}
-        <h3>Latest Complaint:</h3>
-        <ul>
-            <li>{{ latest_complaint.complaint_details }} - {{ latest_complaint.complaint_date }}</li>
-        </ul>
-        <h3>Repair Details:</h3>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Mark as Repaired</button>
-        </form>
+        <div class="complaint-section">
+            <h3>Complaint:</h3>
+            <ul>
+                <li>{{ latest_complaint.complaint_details }} - {{ latest_complaint.complaint_date }}</li>
+            </ul>
+        </div>
+        <div class="repair-form">
+            <h3>Repair Details:</h3>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Mark as Repaired</button>
+            </form>
+        </div>
     {% else %}
-        <p>No new complaints pending repair.</p>
+        <p class="no-complaint">No new complaints pending repair.</p>
     {% endif %}
+</div>
 {% endblock %}

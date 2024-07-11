@@ -39,6 +39,11 @@
             text-align: left; /* Left align form elements */
         }
 
+        .error-message {
+            color: red;
+            margin-bottom: 16px;
+        }
+
         label {
             display: block;
             margin-bottom: 8px;
@@ -74,6 +79,9 @@
         <h2>Login</h2>
         <form action="{% url 'login' %}" method="post" class="login-form">
             {% csrf_token %}
+            {% if form.errors %}
+                <div class="error-message">Invalid username or password. Please try again.</div>
+            {% endif %}
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
             

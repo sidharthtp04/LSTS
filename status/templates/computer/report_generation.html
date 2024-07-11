@@ -102,6 +102,7 @@
             <table>
                 <thead>
                     <tr>
+                        <th>SI No</th>
                         <th>Computer Label</th>
                         <th>Lab Name</th>
                         <th>Complaint Reason</th>
@@ -113,6 +114,7 @@
                 <tbody>
                     {% for item in combined_data %}
                         <tr>
+                            <td>{{ forloop.counter }}</td>
                             <td>{{ item.computer_label }}</td>
                             <td>{{ item.lab_name }}</td>
                             <td>{{ item.complaint_details }}</td>

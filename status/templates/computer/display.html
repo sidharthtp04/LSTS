@@ -14,6 +14,7 @@
     <table>
         <thead>
             <tr>
+                <th>SI No</th>
                 <th>C_Label</th>
                 <th>LAB</th>
                 <th>Date of Purchase</th>
@@ -34,6 +35,7 @@
         <tbody>
             {% for i in details %}
                 <tr>
+                    <td>{{ forloop.counter }}</td>
                     <td>{{ i.c_label }}</td>
                     <td>{{ i.lab.lab_name }}</td>
                     <td>{{ i.dop }}</td>
