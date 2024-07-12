@@ -50,47 +50,65 @@ def home(request):
 @login_required
 @group_required('li')
 def computer(request):
-    cs={
-        'lab':lab.objects.all(),
-        'cpu':cpu_types.objects.all(),
-        'motherboard':motherboard_type.objects.all(),
-        'ram':ram_type.objects.all(),
-        'storage':storage_type.objects.all(),
-        'smps':smps.objects.all(),
-        'keyboard':keyboard.objects.all(),
-        'mouse':mouse.objects.all(),
-        'monitor':monitor.objects.all()
-
+    cs = {
+        'lab': lab.objects.all(),
+        'cpu': cpu_types.objects.all(),
+        'motherboard': motherboard_type.objects.all(),
+        'ram': ram_type.objects.all(),
+        'storage': storage_type.objects.all(),
+        'smps': smps.objects.all(),
+        'keyboard': keyboard.objects.all(),
+        'mouse': mouse.objects.all(),
+        'monitor': monitor.objects.all()
     }
-    if request.method=="POST":
-        clabel=request.POST.get('clabel')
-        dop=request.POST.get('dop')
-        status=request.POST.get('status')
-        invoice_no=request.POST.get('invoice_no')
-        os_type=request.POST.get('os_type')
-        labe=request.POST.get('lab')
-        cpue=request.POST.get('cpu')
-        mbe=request.POST.get('mb')
-        smpse=request.POST.get('smps')
-        rame=request.POST.get('ram')
-        storagee=request.POST.get('storage')
-        keyboarde=request.POST.get('keyboard')
-        mousee=request.POST.get('mouse')
-        monitore=request.POST.get('monitor')
-        labe=lab.objects.get(lab_id=labe)
-        cpue=cpu_types.objects.get(cpu_id=cpue)
-        rame=ram_type.objects.get(ram_id=rame)
-        storagee=storage_type.objects.get(storage_id=storagee)
-        mbe=motherboard_type.objects.get(mb_id=mbe)
-        smpse=smps.objects.get(smps_id=smpse)
-        keyboarde=keyboard.objects.get(keyboard_id=keyboarde)
-        mousee=mouse.objects.get(mouse_id=mousee)
-        monitore=monitor.objects.get(monitor_id=monitore)
-
-        comp=computers(c_label=clabel,lab=labe,cpu=cpue,ram=rame,storage=storagee,dop=dop,status=status,invoice_no=invoice_no,os_type=os_type,mb=mbe,smps=smpse,keyboard=keyboarde,mouse=mousee,monitor=monitore)
+    
+    if request.method == "POST":
+        clabel = request.POST.get('clabel')
+        dop = request.POST.get('dop')
+        status = request.POST.get('status')
+        invoice_no = request.POST.get('invoice_no')
+        os_type = request.POST.get('os_type')
+        
+        labe_id = request.POST.get('lab')
+        cpue_id = request.POST.get('cpu')
+        mbe_id = request.POST.get('mb')
+        smpse_id = request.POST.get('smps')
+        rame_id = request.POST.get('ram')
+        storagee_id = request.POST.get('storage')
+        keyboarde_id = request.POST.get('keyboard')
+        mousee_id = request.POST.get('mouse')
+        monitore_id = request.POST.get('monitor')
+        
+        labe = lab.objects.get(lab_id=labe_id)
+        cpue = cpu_types.objects.get(cpu_id=cpue_id)
+        mbe = motherboard_type.objects.get(mb_id=mbe_id)
+        smpse = smps.objects.get(smps_id=smpse_id)
+        rame = ram_type.objects.get(ram_id=rame_id)
+        storagee = storage_type.objects.get(storage_id=storagee_id)
+        keyboarde = keyboard.objects.get(keyboard_id=keyboarde_id)
+        mousee = mouse.objects.get(mouse_id=mousee_id)
+        monitore = monitor.objects.get(monitor_id=monitore_id)
+        
+        comp = computers(
+            c_label=clabel,
+            lab=labe,
+            cpu=cpue,
+            ram=rame,
+            storage=storagee,
+            dop=dop,
+            status=status,
+            invoice_no=invoice_no,
+            os_type=os_type,
+            mb=mbe,
+            smps=smpse,
+            keyboard=keyboarde,
+            mouse=mousee,
+            monitor=monitore
+        )
         comp.save()
         return redirect("display")
-    return render(request,'computer/front.html',cs)
+    
+    return render(request, 'computer/front.html', cs)
 
 @login_required
 @group_required('li')

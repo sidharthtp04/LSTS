@@ -95,7 +95,7 @@ class computers(models.Model):
     storage = models.ForeignKey(storage_type, on_delete=models.CASCADE)
     dop = models.DateField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=working)
-    invoice_no = models.IntegerField()
+    invoice_no = models.CharField(max_length=20)
     os_type = models.CharField(max_length=20)
     mb = models.ForeignKey(motherboard_type, on_delete=models.CASCADE)
     smps = models.ForeignKey(smps, on_delete=models.CASCADE)
